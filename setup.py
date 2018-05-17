@@ -18,11 +18,11 @@ URL = 'https://github.com/pycampers/react-pages'
 EMAIL = 'devxpy@gmail.com'
 AUTHOR = 'devxpy'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.0.1'
+VERSION = '0.0.2'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    'click', 'watchdog', 'crayons'
+    'click', 'crayons', 'halo', 'toml'
 ]
 
 # What packages are optional?

@@ -1,13 +1,18 @@
 {
+  "plugins": [
+    "inline-react-svg"
+  ],
   "presets": [
     "react",
-    [
-      "env",
-      {
-        "targets": {
-          "uglify": true
-        }
-      }
-    ]
-  ]
+    "env"
+  ],
+  "env": {
+    "production": {
+      "presets": [
+        "react",
+        "env",
+        "minify"
+      ]
+    }
+  }
 }

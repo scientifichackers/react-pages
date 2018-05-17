@@ -1,0 +1,6 @@
+[commands]
+browserify = '{bin}/browserify {input} -t sassify -t babelify -t svgify'
+uglify = '{bin}/uglifyjs --compress --mangle'
+watchify =  '{bin}/watchify {input} -t sassify -t babelify --outfile {output}'
+bin = 'npm bin'
+

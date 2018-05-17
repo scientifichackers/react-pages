@@ -1,23 +1,24 @@
 {
   "name": "react-pages",
-  "license": "MIT",
+  "version": "0.0.2",
+  "repository": "https://github.com/pycampers/react-pages",
+  "description": "A zero-fuss way to create non single page apps with react.",
+  "dependencies": {},
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
+    "babel-core": "^6.26.3",
+    "babel-plugin-inline-react-svg": "^0.5.2",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-minify": "^0.4.3",
     "babel-preset-react": "^6.24.1",
     "babelify": "^8.0.0",
-    "browserify": "^16.1.0",
-    "browserify-css": "^0.14.0",
-    "envify": "^4.1.0",
+    "browserify": "^16.2.2",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
     "sassify": "^4.0.1",
-    "uglify-js": "^3.3.13",
-    "uglifyify": "^4.0.5",
+    "svgify": "0.0.0",
+    "uglify-js": "^3.3.25",
     "watchify": "^3.11.0"
   },
-  "dependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
-  }
+  "author": "devxpy",
+  "license": "MIT"
 }

@@ -5,10 +5,9 @@ name = "pypi"
 
 [packages]
 click = "*"
-watchdog = "*"
 crayons = "*"
 halo = "*"
-django = "*"
+toml = "*"
 
 [dev-packages]
 django = "*"
