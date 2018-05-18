@@ -52,7 +52,7 @@ def init(project_name):
         print(white('Installing node dependencies…'))
         with Halo(spinner=SPINNER):
             result = subprocess.run(
-                ['npm', 'i'],
+                ['npm', 'install'],
                 cwd=project_dir,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -96,6 +96,39 @@ def init_page(page_name):
         )
 
 
+def resolve_input_paths(input):
+    if input is None:
+        input_path = Path().cwd()
+    else:
+        input_path = Path(input)
+
+    if input_path.is_dir():
+        input_paths = [Path(i) for i in input_path.rglob('page.js')]
+    else:
+        input_paths = [Path(input)]
+
+    return input_paths
+
+
+def resolve_output_path(output, input_path):
+    if output is None:
+        output_path = Path.cwd().joinpath('build/')
+    else:
+        output_path = Path(output)
+
+    if not output_path.exists():
+        output_path.mkdir(parents=True)
+
+    if output_path.is_dir():
+        output_path = output_path.joinpath(f'{input_path.parent.name}.bundle.js')
+
+    return output_path
+
+
+def get_npm_bin():
+    return subprocess.check_output(shlex.split(config['commands']['bin']), encoding='utf-8').strip()
+
+
 @click.command('deploy',
                short_help='Bundle everything into a single .js file, suitable for use in production.')
 @click.option('--input', '-i',
@@ -112,36 +145,16 @@ def deploy(input, output):
     - look for "page.js" in current directory, recursively.
     - Browserify everything to ./build/<page>.bundle.js.
     """
-    if input is None:
-        input_path = Path().cwd()
-    else:
-        input_path = Path(input)
+    npm_bin = get_npm_bin()
 
-    if input_path.is_dir():
-        input_paths = [Path(i) for i in input_path.rglob('page.js')]
-    else:
-        input_paths = [Path(input)]
-
-    for input_path in input_paths:
-        if output is None:
-            output_path = Path.cwd().joinpath('build/')
-        else:
-            output_path = Path(output)
-
-        if not output_path.exists():
-            output_path.mkdir(parents=True)
-
-        if output_path.is_dir():
-            output_path = output_path.joinpath(f'{input_path.parent.name}.bundle.js')
-
-        npm_bin = subprocess.check_output(shlex.split(config['commands']['bin']), encoding='utf-8').strip()
+    for input_path in resolve_input_paths(input):
+        output_path = resolve_output_path(input_path, output)
 
         browserify = shlex.split(config['commands']['browserify'].format(**{
             'bin': npm_bin,
             'input': str(input_path),
             'output': str(output_path),
         }))
-
         uglify = shlex.split(config['commands']['uglify'].format(**{
             'bin': npm_bin,
             'input': str(input_path),
@@ -150,11 +163,12 @@ def deploy(input, output):
 
         print(
             '{} {} ~> {}…'.format(
-                white('Deploy', bold=True),
+                white('Deploy:', bold=True),
                 magenta(input_path),
                 green(output_path)
             )
         )
+
         with Halo(spinner=SPINNER) as halo:
             try:
                 result = subprocess.run(
@@ -201,12 +215,42 @@ def deploy(input, output):
         print(cyan('done!'))
 
 
+@click.command('deploy',
+               short_help='Bundle everything into a single .js file, suitable for use in production.')
+@click.option('--input', '-i',
+              type=click.Path(exists=True),
+              help='directory to find "page.js", or path to file')
+@click.option('--output', '-o',
+              type=click.Path(),
+              help='output directory, or output filename')
 def develop(input, output):
-    pass
+    npm_bin = get_npm_bin()
+
+    for input_path in resolve_input_paths(input):
+        output_path = resolve_output_path(input_path, output)
+
+        watchify = shlex.split(config['commands']['watchify'].format(**{
+            'bin': npm_bin,
+            'input': str(input_path),
+            'output': str(output_path),
+        }))
+
+        print(
+            '{} {} ~> {}…'.format(
+                white('Develop:', bold=True),
+                magenta(input_path),
+                green(output_path)
+            )
+        )
+
+        subprocess.Popen(watchify)
+    else:
+        print(cyan('done!'))
 
 
 cli.add_command(init)
 cli.add_command(init_page)
 cli.add_command(deploy)
+
 if __name__ == '__main__':
     cli()
