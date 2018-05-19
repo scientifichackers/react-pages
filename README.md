@@ -1,6 +1,6 @@
 # React Pages
-##### A zero-fuss way to create non single page apps with react.
-
+##### TLDR; A wrapper over common react utilities, giving you a package that just works.
+#### DOES NOT WORK RIGHT NOW.
 
 - Zero Configuration required.
 - Go from development to production with ease.
@@ -22,8 +22,7 @@ $ react-pages deploy # production
 
 ## Django Integration
 
-
-###### settings.py
+__settings.py__
 ```
 INSTALLED_APPS = [
     ...
@@ -35,7 +34,7 @@ INSTALLED_APPS = [
 REACT_PAGES_PROJECT_DIR = os.path.join(BASE_DIR, 'poll_react_pages')
 ```
 
-###### templates
+__template.html__
 ```
 {% load react_pages %}
 ...
@@ -46,8 +45,20 @@ REACT_PAGES_PROJECT_DIR = os.path.join(BASE_DIR, 'poll_react_pages')
 That's it!
 React Pages will pick-up the "vote" page from "poll_react_pages" project and do the nessecary work to transpile react code.
 
-#### BTW, Feel free to access the global variable `context` from your react jsx code.
-##### (That'll be the the django template context!)
+###### Django Context
+
+You can pass django template context varialbes like so -
+
+__views.py__
+`context['foo'] = [1, 2, 3]`
+
+__template.html__
+`{% render_react_page 'vote' foo=foo %}`
+
+Then access these anywhere in react code
+`console.log(foo);`
+
+*Note: These must be JSON serialize-able*
 
 For production, just put `DEBUG=False` in `settings.py` and relax.
 

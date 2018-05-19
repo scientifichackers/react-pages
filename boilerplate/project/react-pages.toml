@@ -1,0 +1,25 @@
+# common to both deploy and develop
+[commands]
+bin = 'npm bin'
+
+# commands used in deployment
+[commands.deploy]
+browserify = '''{bin}/browserify {source}
+                --extension=.js --extension=.jsx
+                -t svg-reactify -t babelify -t sassify -t [browserify-css --minify=true]'''
+
+uglify = '{bin}/uglifyjs --compress --mangle -o {destination}'
+
+# commands used in development
+[commands.develop]
+browserify = '''{bin}/browserify {source}
+                    --extension=.js --extension=.jsx
+                    --debug
+                    -t svg-reactify -t babelify -t sassify -t browserify-css
+                    -o {destination}'''
+
+watchify = '''{bin}/watchify {source}
+                --extension=.js --extension=.jsx
+                --debug --verbose
+                -t svg-reactify -t babelify -t sassify -t browserify-css
+                -o {destination}'''

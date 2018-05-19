@@ -9,18 +9,45 @@ from crayons import *
 from halo import Halo
 
 # paths
-FILE = Path(__file__)
-ROOT = FILE.parent.parent
+ROOT = Path(__file__).parent.parent
 PROJECT = ROOT.joinpath('boilerplate', 'project')
 PAGE = ROOT.joinpath('boilerplate', 'page')
+
+PROJECT_FILES = (
+    'react-pages.toml',
+    'package.json',
+    'package-lock.json',
+    '.babelrc'
+)
 
 # beauty stuff
 SPINNER = 'moon'
 
+# try to load local config. Fallback to default if necessary
 try:
-    config = toml.load(str(Path.cwd().joinpath('react_pages.toml')))
+    config = toml.load(str(Path.cwd().joinpath('react-pages.toml')))
 except FileNotFoundError:
-    config = toml.load(str(Path(__file__).parent.joinpath('react_pages.toml')))
+    config = toml.load(str(PROJECT.joinpath('react-pages.toml')))
+
+DEMO_HTML = '<div id="root"></div><script src="{}"></script>'
+
+
+def create_demo_html(js_path: Path) -> Path:
+    """
+    Generate a demo html file, containing reference to the given js file,
+    then return the path to generated html file
+    """
+
+    try:
+        html_filename = js_path.name.split('.')[0] + '.html'
+    except IndexError:
+        html_filename = 'demo.html'
+    html_path = js_path.parent.joinpath(html_filename)
+
+    with open(html_path, 'w') as fp:
+        fp.write(DEMO_HTML.format(str(js_path.absolute())))
+
+    return html_path
 
 
 @click.group()
@@ -32,20 +59,27 @@ def cli():
                short_help='Create a new project, inside a new directory')
 @click.argument('project-name', type=click.Path())
 def init(project_name):
-    project_dir = Path.cwd().joinpath(project_name)
     print(
         '{} {}…'.format(
             white('Creating new project', bold=True),
             green(project_name, bold=True),
         )
     )
+    project_dir = Path.cwd().joinpath(project_name)
 
-    try:
-        shutil.copytree(PROJECT, project_dir)
-    except FileExistsError:
-        print(red('Error: Directory already exists!'))
+    if not project_dir.exists():
+        project_dir.mkdir(parents=True)
+
+    if any(project_dir.joinpath(i).exists() for i in PROJECT_FILES):
+        print(red('The directory ') + green(project_dir) + red(' contains files that could conflict:\n'))
+
+        for i in PROJECT_FILES:
+            if project_dir.joinpath(i).exists():
+                print(f'\t{i.name}')
+        print('\nEither try using a new directory name, or remove the files listed above.')
     else:
-        shutil.copy(FILE.parent.joinpath('react_pages.toml'), project_dir)
+        for i in PROJECT_FILES:
+            shutil.copy(PROJECT.joinpath(i), project_dir)
 
         print(blue(f'Copied project boilerplate to {project_dir}'))
 
@@ -70,8 +104,7 @@ def init(project_name):
             print(red('Failed!'))
 
 
-@click.command('page',
-               short_help='Create a new page, inside a new directory, containing boiler-plate for react')
+@click.command('page', short_help='Create a new page, inside a new directory, containing boiler-plate for react')
 @click.argument('page-name', type=click.Path())
 def init_page(page_name):
     page_dir = Path.cwd().joinpath(page_name)
@@ -90,115 +123,157 @@ def init_page(page_name):
         print(
             '{} {} {}'.format(
                 magenta('Run'),
-                magenta(f'react-pages deploy', bold=True),
+                magenta(f'react-pages develop', bold=True),
                 magenta('to use this page')
             )
         )
 
 
-def resolve_input_paths(input):
-    if input is None:
-        input_path = Path().cwd()
+def resolve_paths(src, dest):
+    # fallback to default destination location
+    if dest is None:
+        dest = Path.cwd().joinpath('build')
+
+        if not dest.exists():
+            dest.mkdir(parents=True)
     else:
-        input_path = Path(input)
+        dest = Path(dest)
 
-    if input_path.is_dir():
-        input_paths = [Path(i) for i in input_path.rglob('page.js')]
+    # fallback to default source location
+    if src is None:
+        src = Path().cwd()
     else:
-        input_paths = [Path(input)]
+        src = Path(src)
 
-    return input_paths
+    for src_path in resolve_src_paths(src):
+        yield src_path.absolute(), resolve_dest_path(src_path, dest).absolute()
 
 
-def resolve_output_path(output, input_path):
-    if output is None:
-        output_path = Path.cwd().joinpath('build/')
+def recursive_search(to_find, path, num=0):
+    found = list(path.glob(f'{"*/" * num}{to_find}'))
+    num += 1
+
+    if found:
+        return found
     else:
-        output_path = Path(output)
+        return recursive_search(to_find, path, num)
 
-    if not output_path.exists():
-        output_path.mkdir(parents=True)
 
-    if output_path.is_dir():
-        output_path = output_path.joinpath(f'{input_path.parent.name}.bundle.js')
+def resolve_src_paths(src: Path):
+    # search for "index.js" if src is a dir
+    if src.is_dir():
+        return recursive_search('index.js', src)
+    else:
+        return src
 
-    return output_path
+
+def resolve_dest_path(src: Path, dest: Path) -> Path:
+    # If dest is a dir, put proper filename
+    if dest.is_dir():
+        dest = dest.joinpath(f'{src.parent.name}.bundle.js')
+
+    # Ensure parent dir exists
+    if not dest.parent.exists():
+        dest.parent.mkdir(parents=True)
+
+    return dest
+
+
+import os
 
 
 def get_npm_bin():
     return subprocess.check_output(shlex.split(config['commands']['bin']), encoding='utf-8').strip()
 
 
-@click.command('deploy',
-               short_help='Bundle everything into a single .js file, suitable for use in production.')
-@click.option('--input', '-i',
+@click.command(short_help='Bundle everything into a single .js file, suitable for use in production.')
+@click.option('--src', '--source',
               type=click.Path(exists=True),
-              help='directory to find "page.js", or path to file')
-@click.option('--output', '-o',
+              help='directory to look for "index.js", or path to file')
+@click.option('--dest', '--destination',
               type=click.Path(),
-              help='output directory, or output filename')
-def deploy(input, output):
+              is_flag=True,
+              help='destination directory, or filename')
+@click.option('--html', is_flag=True, help='Generate boiler-plate html along-side the .js, for quick demo')
+def deploy(source: str, destination: str, html: bool):
     """
     Bundle everything into a single .js file, suitable for use in production.
 
-    By default,
-    - look for "page.js" in current directory, recursively.
-    - Browserify everything to ./build/<page>.bundle.js.
+    By default, this shall -
+    Look for "index.js" in current directory, and incrementally in sub-directories if nothing can be found.
+    Browserify everything to ./build/<page>.bundle.js.
     """
+
     npm_bin = get_npm_bin()
 
-    for input_path in resolve_input_paths(input):
-        output_path = resolve_output_path(input_path, output)
+    env = os.environ.copy()
+    env['NODE_ENV'] = 'production'
+    env['BABEL_ENV'] = 'production'
 
-        browserify = shlex.split(config['commands']['browserify'].format(**{
+    for src_path, dest_path in resolve_paths(source, destination):
+        if html:
+            create_demo_html(dest_path)
+
+        browserify = shlex.split(config['commands']['deploy']['browserify'].format(**{
             'bin': npm_bin,
-            'input': str(input_path),
-            'output': str(output_path),
+            'source': src_path,
+            'destination': dest_path,
         }))
-        uglify = shlex.split(config['commands']['uglify'].format(**{
+        uglify = shlex.split(config['commands']['deploy']['uglify'].format(**{
             'bin': npm_bin,
-            'input': str(input_path),
-            'output': str(output_path),
+            'source': src_path,
+            'destination': dest_path,
         }))
 
         print(
             '{} {} ~> {}…'.format(
                 white('Deploy:', bold=True),
-                magenta(input_path),
-                green(output_path)
+                magenta(src_path),
+                green(dest_path)
             )
         )
 
         with Halo(spinner=SPINNER) as halo:
             try:
+                halo.stop()
+                print(blue(browserify))
+                halo.start()
+
                 result = subprocess.run(
                     browserify,
                     cwd=Path.cwd(),
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
-                    encoding='utf-8'
+                    encoding='utf-8',
+                    env=env
                 )
 
                 if result.stderr:
+                    halo.stop()
                     print(red(result.stderr))
+                    halo.start()
 
                 if result.returncode == 0:
+                    halo.stop()
+                    print(blue(uglify))
+                    halo.start()
+
                     result = subprocess.run(
                         uglify,
                         input=result.stdout,
                         cwd=Path.cwd(),
                         stdout=subprocess.PIPE,
                         stderr=subprocess.PIPE,
-                        encoding='utf-8'
+                        encoding='utf-8',
+                        env=env
                     )
 
                     if result.stderr:
+                        halo.stop()
                         print(red(result.stderr))
+                        halo.start()
 
-                    if result.returncode == 0:
-                        with open(output_path, 'w') as fp:
-                            fp.write(result.stdout)
-                    else:
+                    if result.returncode != 0:
                         halo.stop()
                         print(red('Failed!'))
                         return
@@ -215,42 +290,75 @@ def deploy(input, output):
         print(cyan('done!'))
 
 
-@click.command('deploy',
-               short_help='Bundle everything into a single .js file, suitable for use in production.')
-@click.option('--input', '-i',
+@click.command(short_help='Start the development environment')
+@click.option('-s', '--src', '--source',
               type=click.Path(exists=True),
-              help='directory to find "page.js", or path to file')
-@click.option('--output', '-o',
+              help='directory to look for "index.js", or path to file')
+@click.option('-d', '--dest', '--destination',
               type=click.Path(),
-              help='output directory, or output filename')
-def develop(input, output):
+              help='destination directory, or filename')
+@click.option('-D', '--disable-watch',
+              is_flag=True,
+              help='Disable file watcher / auto-reloader')
+@click.option('--html', is_flag=True, help='Generate boiler-plate html along-side the .js, for quick demo')
+def develop(source: str, destination: str, disable_watch: bool, html: bool):
+    """
+    Start the development environment,
+    Bundles everything into a singe .js file
+
+    By default, this shall-
+    Look for "index.js" in current directory, and incrementally in sub-directories if nothing can be found.
+    Watchify file, output-ing to./build/<page>.bundle.js.
+    """
+
+    env = os.environ.copy()
+    env['NODE_ENV'] = 'development'
+    env['BABEL_ENV'] = 'development'
+
     npm_bin = get_npm_bin()
-
-    for input_path in resolve_input_paths(input):
-        output_path = resolve_output_path(input_path, output)
-
-        watchify = shlex.split(config['commands']['watchify'].format(**{
-            'bin': npm_bin,
-            'input': str(input_path),
-            'output': str(output_path),
-        }))
+    procs = []
+    for src_path, dest_path in list(resolve_paths(source, destination)):
+        if html:
+            create_demo_html(dest_path)
 
         print(
             '{} {} ~> {}…'.format(
                 white('Develop:', bold=True),
-                magenta(input_path),
-                green(output_path)
+                magenta(src_path),
+                green(dest_path)
             )
         )
 
-        subprocess.Popen(watchify)
-    else:
+        if disable_watch:
+            browserify = shlex.split(config['commands']['develop']['browserify'].format(**{
+                'bin': npm_bin,
+                'source': src_path,
+                'destination': dest_path,
+            }))
+            print(blue(browserify))
+
+            with Halo(spinner=SPINNER):
+                subprocess.run(browserify, env=env)
+        else:
+            watchify = shlex.split(config['commands']['develop']['watchify'].format(**{
+                'bin': npm_bin,
+                'source': str(src_path),
+                'destination': str(dest_path),
+            }))
+            print(blue(watchify))
+
+            procs.append(subprocess.run(watchify, env=env))
+    if not disable_watch:
+        for proc in procs:
+            proc.wait()
+
         print(cyan('done!'))
 
 
 cli.add_command(init)
 cli.add_command(init_page)
 cli.add_command(deploy)
+cli.add_command(develop)
 
 if __name__ == '__main__':
     cli()
