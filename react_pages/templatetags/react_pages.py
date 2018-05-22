@@ -33,7 +33,7 @@ def render_react_page(context, page_name, **kwargs):
                 src_path, dest_path = next(resolve_paths(src_dir, static_dir))
 
                 subprocess.run(
-                    ['react-pages', 'develop', '--source', src_dir, '--destination', dest_path, '--disable-watch'],
+                    ['react-pages', 'develop', '--source', src_dir, '--destination', dest_path, '--no-watch'],
                     cwd=react_pages_project_dir
                 )
 

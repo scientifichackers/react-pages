@@ -1,10 +1,36 @@
 # React Pages
-##### TLDR; A wrapper over common react utilities, giving you a package that just works.
-#### DOES NOT WORK RIGHT NOW.
+##### A zero-fuss solution for using React for non-SPAs, django and other non-node environments.
 
 - Zero Configuration required.
 - Go from development to production with ease.
-- Natively use react in django.
+- Automatically install node using nvm.
+- Natively use react in django/flask.
+
+## Terminology
+
+#### Project
+The project contains the node.js modules necessary to use react, some other js files, required by react pages itself and the pages you add.
+
+```
+└── project
+    ├── package.json
+    └── package-lock.json
+```
+
+#### Page:
+
+A page is a directory containing at least an `index.js` file, (and probably other css/js files specific to your application.)
+
+```
+└── page
+    ├── App.css
+    ├── App.js
+    ├── App.test.js
+    ├── index.css
+    ├── index.js
+    ├── logo.svg
+    └── registerServiceWorker.js
+```
 
 ## QuickStart
 
