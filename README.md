@@ -124,7 +124,8 @@ console.log(js_list);
 
 **Note: These must be JSON serializable or JSON serialized.**
 
-For production, just put `DEBUG=False` in `settings.py` and relax.
+### For production, just put `DEBUG=False` in `settings.py` and relax.
+**Note: This is not implemented yet.**
 
 ## Existing projects
 
