@@ -129,5 +129,5 @@ Projects not using `create-react-app` will probably work, but no guarantees can 
 
 - It might not uninstall using pip.
 
-  This is a side-effect of react-page's caching.
+  This is a side-effect of react-page's caching.<br>
   As a temporary fix, Run `react-pages uncache` once, and then `pip uninstall react-pages` will work.
