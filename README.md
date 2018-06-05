@@ -1,14 +1,13 @@
 # React Pages
 ##### A zero-fuss way to create non single page apps with react.
 
-- Zero Configuration required.
-- Go from development to production with ease.
-
-## Features
-- [custom react scripts](https://github.com/kitze/custom-react-scripts)
-- Imports from other pages (create-react-app doesn't allow that)
-- Natively use react in django.
+- Zero Configuration required. Mostly thanks to [create-react-app](https://github.com/facebook/create-react-app).
+- [Custom react scripts](https://github.com/kitze/custom-react-scripts) inbuilt.
+- Cross-page import (create-react-app [doesn't allow this](https://github.com/facebook/create-react-app/issues/834)).
 - Ready-to-serve production builds with the proper paths. (using `--static-url` option)
+- Natively use react in django.
+- Go from development to production with ease.
+- Caches npm stuff. You'll notice that the command `react-pages project` runs much after the 1st time.
 
 ## Terminology
 
@@ -128,4 +127,7 @@ Projects not using `create-react-app` will probably work, but no guarantees can 
 
 ## Issues
 
-- It might not uninstall using pip. As a temporary fix, Run `react-pages uninstall` once, and then `pip uninstall react-pages` will work.
+- It might not uninstall using pip.
+
+  This is a side-effect of react-page's caching.
+  As a temporary fix, Run `react-pages uninstall` once, and then `pip uninstall react-pages` will work.
