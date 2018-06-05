@@ -47,7 +47,7 @@ A page is a directory containing at least an `index.js` file, (and other css/js 
 
 You need npm on your machine!
 
-[![PyPI version (tag)](https://img.shields.io/badge/pip-0.1.2-blue.svg?longCache=true&style=for-the-badge)](https://pypi.org/project/react-pages/)
+[![PyPI version (tag)](https://img.shields.io/badge/pip-0.1.3-blue.svg?longCache=true&style=for-the-badge)](https://pypi.org/project/react-pages/)
 
 `pip install react-pages`
 
