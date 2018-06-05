@@ -18,15 +18,15 @@ URL = 'https://github.com/pycampers/react-pages'
 EMAIL = 'devxpy@gmail.com'
 AUTHOR = 'devxpy'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.0.3'
+VERSION = '0.0.8'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-    'click', 'crayons', 'halo'
+    'click', 'crayons', 'halo', 'python-dotenv'
 ]
 
 # What packages are optional?
-EXTRAS = {
+EXTRA = {
     'django integration': ['django']
 }
 
@@ -104,10 +104,10 @@ setup(
     # py_modules=['cli'],
 
     entry_points={
-        'console_scripts': ['react-pages=react_pages.react_pages_cli:cli'],
+        'console_scripts': ['react-pages=react_pages.cli:cli'],
     },
     install_requires=REQUIRED,
-    extras_require=EXTRAS,
+    extras_require=EXTRA,
     include_package_data=True,
     license='MIT',
     classifiers=[

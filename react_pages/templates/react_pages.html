@@ -1,0 +1,3 @@
+<script>{% for var, value in vars.items %}const {{ var|escapejs }} = {{ value | safe }};{% endfor %}</script>
+
+{{ html | safe }}

@@ -41,7 +41,7 @@ $ cd poll_react_pages
 
 $ react-pages page vote # create a page
 
-$ react-pages develop # development
+$ react-pages react_pages # development
 
 $ react-pages deploy # production
 ```
@@ -88,3 +88,11 @@ Then access these anywhere in react code
 
 For production, just put `DEBUG=False` in `settings.py` and relax.
 
+## Existing projects
+
+React Pages will automatically patch itslef into any existing project,
+that was created using `create-react-app`.
+
+Just run `react-pages project .` from your project directory!
+
+Projects not using `create-react-app` will probably work, but no guarantees can be made.

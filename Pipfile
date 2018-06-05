@@ -7,6 +7,8 @@ name = "pypi"
 click = "*"
 crayons = "*"
 halo = "*"
+zproc = "*"
+python-dotenv = "*"
 
 [dev-packages]
 django = "*"
