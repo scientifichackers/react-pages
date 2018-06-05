@@ -122,7 +122,7 @@ __App.js__<br>
 console.log(js_list);
 ```
 
-**Note: These must be JSON serialize-able**
+**Note: These must be JSON serialize-able or JSON serailized.**
 
 For production, just put `DEBUG=False` in `settings.py` and relax.
 
