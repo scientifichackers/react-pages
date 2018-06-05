@@ -95,7 +95,7 @@ __template.html__
 ```
 
 ### Remember to use `react-pages runserver` instead of `manage.py runserver`!
-(This was done to remove the manual build step.)
+(This was done to remove the manual build step).
 
 That's it!
 React Pages will pick-up the "my_page" page from "my_project"
