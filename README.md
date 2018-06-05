@@ -123,3 +123,7 @@ that was created using `create-react-app`.
 Just run `react-pages project .` from your project directory!
 
 Projects not using `create-react-app` will probably work, but no guarantees can be made.
+
+## Issues
+
+- It might not uninstall using pip. As a temporary fix, Run `react-pages uninstall` once, and then `pip uninstall react-pages` will work.

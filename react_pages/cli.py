@@ -181,6 +181,7 @@ def _build(source: str, destination: str, no_watch: bool, verbose: bool, static_
 
     run_subproc(
         [
+            '/usr/bin/env', 'node',
             get_npm_root() / 'react-pages' / 'scripts' / 'react_pages.js',
             json.dumps(settings_list)
         ],
@@ -275,7 +276,8 @@ def init(project_name):
     # other files
     copy_files_safe(NODEJS, ('.env', '.gitignore', 'public'), project_dir)
 
-    print(white('Installing node dependencies…'))
+    print(white('Installing node modules…'))
+    print(white('Grab a coffee, this usually takes some time.', bold=True))
     run_subproc(
         ['npm', 'install', '--save', NODEJS],
         cwd=project_dir,
@@ -394,11 +396,32 @@ def runserver(runserver_args):
         print(red('"manage.py" not found. Please run this command from a directory containing "manage.py".'))
 
 
+@click.command(short_help="Fix a bug where react-pages can't be uninstalled using pip")
+def uninstall():
+    """
+    Because of react-pages's structure, react-pages may not uninstall using pip.
+
+    To overcome this, this handy script is provided.
+    """
+
+    print(white('Removing node modules…'))
+
+    shutil.rmtree(NODEJS / 'node_modules', ignore_errors=True)
+
+    print(cyan('Done!'))
+    print('{} {}{}'.format(
+        cyan('Please run', bold=True),
+        green('pip uninstall react-pages', bold=True),
+        cyan('. It should work now.', bold=True)
+    ))
+
+
 cli.add_command(init)
 cli.add_command(init_page)
 cli.add_command(deploy)
 cli.add_command(develop)
 cli.add_command(runserver)
+cli.add_command(uninstall)
 
 if __name__ == '__main__':
     cli()
