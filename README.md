@@ -68,6 +68,8 @@ $ react-pages runserver # django runserver alternative
 
 ## Django Integration
 
+### Quickstart
+
 __settings.py__
 ```
 INSTALLED_APPS = [
@@ -101,20 +103,20 @@ That's it!<br>
 React Pages will pick-up the "my_page" page from "my_project"
  project and do the necessary work to transpire react JSX.
 
-#### Django Context
+### Django Context
 
 You can pass django template context varialbes like so -
 
-__views.py__
+__views.py__<br>
 `context['py_numbers'] = [1, 2, 3]`
 
-__template.html__
+__template.html__<br>
 `{% render_react_page 'my_page' js_numbers=py_numbers %}`
 
-Then access these anywhere in JS
+__App.js__<br>
 `console.log(js_numbers);`
 
-*Note: These must be JSON serialize-able*
+**Note: These must be JSON serialize-able**
 
 For production, just put `DEBUG=False` in `settings.py` and relax.
 
