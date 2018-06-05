@@ -45,6 +45,10 @@ A page is a directory containing at least an `index.js` file, (and other css/js 
 
 ## QuickStart
 
+`pip install react-pages`
+
+*Commands :*
+
 ```sh
 $ react-pages project poll_react_pages # create a project
 
