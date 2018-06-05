@@ -1,10 +1,14 @@
 # React Pages
-##### A zero-fuss solution for using React for non-SPAs, django and other non-node environments.
+##### A zero-fuss way to create non single page apps with react.
 
 - Zero Configuration required.
 - Go from development to production with ease.
-- Automatically install node using nvm.
-- Natively use react in django/flask.
+
+## Features
+- [custom react scripts](https://github.com/kitze/custom-react-scripts)
+- Imports from other pages (create-react-app doesn't allow that)
+- Natively use react in django.
+- Ready-to-serve production builds with the proper paths. (using `--static-url` option)
 
 ## Terminology
 
