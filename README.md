@@ -101,7 +101,7 @@ __template.html__
 
 That's it!<br>
 React Pages will pick-up the "my_page" page from "my_project"
- project and do the necessary work to transpire react JSX.
+ project and do the necessary work to transpile react JSX.
 
 ### Django Context
 
