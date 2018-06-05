@@ -16,7 +16,7 @@
 The project contains the node.js modules necessary to use react and the pages you create.
 
 ```
-└── project
+└── my_project
     ├── package.json
     ├── package-lock.json
     ├── .env
@@ -33,7 +33,7 @@ The project contains the node.js modules necessary to use react and the pages yo
 A page is a directory containing at least an `index.js` file, (and other css/js files specific to your application.)
 
 ```
-└── page
+└── my_page
     ├── App.css
     ├── App.js
     ├── App.test.js
@@ -56,7 +56,7 @@ You need npm on your machine!
 ```sh
 $ react-pages project my_project # create a project
 
-$ cd poll_react_pages
+$ cd my_project # Don't forget to do this!
 
 $ react-pages page my_page # create a page
 
@@ -91,27 +91,27 @@ __template.html__
 ```
 {% load react_pages %}
 ...
-{% render_react_page 'vote' %}
+{% render_react_page 'my_page' %}
 ...
 ```
 
 **Remeber to use `react-pages runserver` instead of `manage.py runserver`!**
 
 That's it!
-React Pages will pick-up the "vote" page from "poll_react_pages" project and do the necessary work to transpire react JSX.
+React Pages will pick-up the "my_page" page from "my_project" project and do the necessary work to transpire react JSX.
 
-##### Django Context
+#### Django Context
 
 You can pass django template context varialbes like so -
 
 __views.py__
-`context['foo'] = [1, 2, 3]`
+`context['py_numbers'] = [1, 2, 3]`
 
 __template.html__
-`{% render_react_page 'vote' foo=foo %}`
+`{% render_react_page 'my_page' js_numbers=py_numbers %}`
 
-Then access these anywhere in react code
-`console.log(foo);`
+Then access these anywhere in JS
+`console.log(js_numbers);`
 
 *Note: These must be JSON serialize-able*
 
