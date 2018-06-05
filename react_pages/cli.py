@@ -179,17 +179,25 @@ def _build(source: str, destination: str, no_watch: bool, verbose: bool, static_
             'verbose': verbose,
         })
 
-    run_subproc(
-        [
-            '/usr/bin/env', 'node',
-            get_npm_root() / 'react-pages' / 'scripts' / 'react_pages.js',
-            json.dumps(settings_list)
-        ],
-        cwd=get_npm_prefix()
-    )
+    if len(settings_list):
+        run_subproc(
+            [
+                '/usr/bin/env', 'node',
+                get_npm_root() / 'react-pages' / 'scripts' / 'react_pages.js',
+                json.dumps(settings_list)
+            ],
+            cwd=get_npm_prefix()
+        )
 
-    print(cyan('Done!'))
+        print(cyan('Done!'))
+    else:
+        print(red('You must create a page first!'))
 
+        print('{} {} {}'.format(
+            white('Run', bold=True),
+            magenta('react-pages page <page name>', bold=True),
+            white('to create a page.', bold=True)
+        ))
 
 def get_build_decorator(*, deploy):
     def build_decorator(func):
@@ -312,9 +320,9 @@ def init_page(page_name):
 
         print(
             '{} {} {}'.format(
-                magenta('Run'),
-                magenta(f'react-pages develop', bold=True),
-                magenta('to use this page')
+                white('Run', bold=True),
+                magenta('react-pages develop', bold=True),
+                white('to use this page.', bold=True)
             )
         )
 
@@ -410,9 +418,9 @@ def uninstall():
 
     print(cyan('Done!'))
     print('{} {}{}'.format(
-        cyan('Please run', bold=True),
-        green('pip uninstall react-pages', bold=True),
-        cyan('. It should work now.', bold=True)
+        white('Please run', bold=True),
+        magenta('pip uninstall react-pages', bold=True),
+        white('. It should work now.', bold=True)
     ))
 
 
