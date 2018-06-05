@@ -75,29 +75,29 @@ def get_npm_prefix(cwd=Path.cwd()):
 def resolve_paths(src: str, dest: str) -> Iterable[Tuple[Path, Path, Path or None]]:
     """Given src and dest str, yield some src paths and dest dirs"""
 
-    dest_dir = resolve_dest_dir(dest)
-
     global_public = Path.cwd() / 'public'
 
     for src_path in resolve_src_paths(src):
         local_public = src_path.parent / 'public'
 
         if local_public.exists():
-            yield src_path.resolve(), (dest_dir / src_path.parent.name).resolve(), local_public.resolve()
+            yield src_path, resolve_dest_dir(src_path, dest), local_public
         elif global_public.exists():
-            yield src_path.resolve(), (dest_dir / src_path.parent.name).resolve(), global_public.resolve()
+            yield src_path, resolve_dest_dir(src_path, dest), global_public
         else:
             courtesy_notice('"public" folder not found, fall-back to default!')
 
-            yield src_path.resolve(), (dest_dir / src_path.parent.name).resolve(), NODEJS / 'public'
+            yield src_path, resolve_dest_dir(src_path, dest), NODEJS / 'public'
 
 
-def resolve_dest_dir(dest: str) -> Path:
+def resolve_dest_dir(src_path: Path, dest: str) -> Path:
     # fallback to default destination location
     if dest is None:
         dest_dir = get_npm_prefix() / 'build'
     else:
         dest_dir = Path(dest)
+
+    dest_dir = dest_dir / src_path.parent.name
 
     if dest_dir.exists():
         if not dest_dir.is_dir():
@@ -126,14 +126,16 @@ def courtesy_notice(msg):
     print(cyan(f"Courtesy Notice: {msg}", bold=True))
 
 
-def copy_files_safe(src_dir: Path, filenames: Iterable[str], dest_dir: Path):
-    for filename in filenames:
+def copy_files_safe(src_dir: Path, names: Iterable[str], dest_dir: Path):
+    for filename in names:
         src = src_dir / filename
 
         if src.exists():
             if src.is_dir():
-                if not dest_dir.exists():
-                    shutil.copytree(src, dest_dir)
+                dest = dest_dir / src.name
+
+                if not dest.exists():
+                    shutil.copytree(src, dest)
             else:
                 dest = dest_dir / filename
 

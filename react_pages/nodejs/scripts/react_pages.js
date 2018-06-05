@@ -43,23 +43,24 @@ function react_pages(settings_list_json) {
 
         const compiler = webpack(config);
 
-
         const handle_output = (err, stats) => {
+            const was_spinning = spinner.isSpinning;
+
             // handle webpack output and print out in proper format
             if (err) {
-                spinner.stop();
+                if (was_spinning) spinner.stop();
 
                 console.error(err.stack || err);
                 if (err.details) {
                     console.error(err.details);
                 }
 
-                spinner.start();
+                if (was_spinning) spinner.start();
                 return
             }
 
             if (verbose) {
-                spinner.stop();
+                if (was_spinning) spinner.stop();
 
                 console.log();
                 console.log(
@@ -70,7 +71,7 @@ function react_pages(settings_list_json) {
                 );
                 console.log();
 
-                spinner.start();
+                if (was_spinning) spinner.start();
             }
         };
 
@@ -89,8 +90,8 @@ function react_pages(settings_list_json) {
                     spinner.start();
                 }
                 if (handler === 1) {
-
-                    spinner.succeed(settings['complete msg'])
+                    spinner.succeed(settings['complete msg']);
+                    spinner.stop()
                 }
             })
         );
