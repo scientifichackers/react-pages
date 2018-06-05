@@ -97,7 +97,7 @@ __template.html__
 ### Remember to use `react-pages runserver` instead of `manage.py runserver`!
 (This was done to remove the manual build step).
 
-That's it!
+That's it!<br>
 React Pages will pick-up the "my_page" page from "my_project"
  project and do the necessary work to transpire react JSX.
 
