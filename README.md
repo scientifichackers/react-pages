@@ -45,20 +45,22 @@ A page is a directory containing at least an `index.js` file, (and other css/js 
 
 ## QuickStart
 
-[![PyPI version (tag)](https://img.shields.io/badge/pip-0.3.7-blue.svg?longCache=true&style=for-the-badge)](https://pypi.org/project/react-pages/)
+You need npm on your machine!
+
+[![PyPI version (tag)](https://img.shields.io/badge/pip-0.1.2-blue.svg?longCache=true&style=for-the-badge)](https://pypi.org/project/react-pages/)
 
 `pip install react-pages`
 
 *Commands :*
 
 ```sh
-$ react-pages project poll_react_pages # create a project
+$ react-pages project my_project # create a project
 
 $ cd poll_react_pages
 
-$ react-pages page vote # create a page
+$ react-pages page my_page # create a page
 
-$ react-pages react_pages # development
+$ react-pages develop # development
 
 $ react-pages deploy # production
 

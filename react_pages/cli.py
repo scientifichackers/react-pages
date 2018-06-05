@@ -61,15 +61,15 @@ def run_subproc(cmd, *, enable_spinner=False, **kwargs):
 
 
 def get_npm_bin(cwd=Path.cwd()):
-    return Path(subprocess.check_output(['npm', 'bin'], encoding='utf-8', cwd=cwd).strip())
+    return Path(subprocess.check_output(['/usr/bin/env', 'npm', 'bin'], encoding='utf-8', cwd=cwd).strip())
 
 
 def get_npm_root(cwd=Path.cwd()):
-    return Path(subprocess.check_output(['npm', 'root'], encoding='utf-8', cwd=cwd).strip())
+    return Path(subprocess.check_output(['/usr/bin/env', 'npm', 'root'], encoding='utf-8', cwd=cwd).strip())
 
 
 def get_npm_prefix(cwd=Path.cwd()):
-    return Path(subprocess.check_output(['npm', 'prefix'], encoding='utf-8', cwd=cwd).strip())
+    return Path(subprocess.check_output(['/usr/bin/env', 'npm', 'prefix'], encoding='utf-8', cwd=cwd).strip())
 
 
 def resolve_paths(src: str, dest: str) -> Iterable[Tuple[Path, Path, Path or None]]:
@@ -279,7 +279,7 @@ def init(project_name):
     print(white('Installing node modules…'))
     print(white('Grab a coffee, this usually takes some time.', bold=True))
     run_subproc(
-        ['npm', 'install', '--save', NODEJS],
+        ['/usr/bin/env', 'npm', 'install', '--save', NODEJS],
         cwd=project_dir,
         enable_spinner=True,
     )
