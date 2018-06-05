@@ -45,6 +45,8 @@ A page is a directory containing at least an `index.js` file, (and other css/js 
 
 ## QuickStart
 
+![PyPI version (tag)](https://img.shields.io/badge/pip-0.3.7-blue.svg?longCache=true&style=for-the-badge)
+
 `pip install react-pages`
 
 *Commands :*
