@@ -94,10 +94,11 @@ __template.html__
 ...
 ```
 
-**Remeber to use `react-pages runserver` instead of `manage.py runserver`!**
+#### Remember to use `react-pages runserver` instead of `manage.py runserver`!
 
 That's it!
-React Pages will pick-up the "my_page" page from "my_project" project and do the necessary work to transpire react JSX.
+React Pages will pick-up the "my_page" page from "my_project"
+ project and do the necessary work to transpire react JSX.
 
 #### Django Context
 
@@ -123,11 +124,13 @@ that was created using `create-react-app`.
 
 Just run `react-pages project .` from your project directory!
 
-Projects not using `create-react-app` will probably work, but no guarantees can be made.
+Projects not using `create-react-app` will probably work,
+ but no guarantees can be made.
 
 ## Issues
 
 - It might not uninstall using pip.
 
   This is a side-effect of react-page's caching.<br>
-  As a temporary fix, Run `react-pages uncache` once, and then `pip uninstall react-pages` will work.
+  As a temporary fix, Run `react-pages clear-cache`,
+  and then `pip uninstall react-pages` will work as expected.

@@ -199,6 +199,7 @@ def _build(source: str, destination: str, no_watch: bool, verbose: bool, static_
             white('to create a page.', bold=True)
         ))
 
+
 def get_build_decorator(*, deploy):
     def build_decorator(func):
         @click.option('--src', '--source',
@@ -404,8 +405,8 @@ def runserver(runserver_args):
         print(red('"manage.py" not found. Please run this command from a directory containing "manage.py".'))
 
 
-@click.command(short_help="Fix a bug where react-pages can't be uninstalled using pip")
-def uninstall():
+@click.command('clear-cache', short_help="Fix a bug where react-pages can't be uninstalled using pip")
+def clear_cache():
     """
     Because of react-pages's structure, react-pages may not uninstall using pip.
 
@@ -418,9 +419,9 @@ def uninstall():
 
     print(cyan('Done!'))
     print('{} {}{}'.format(
-        white('Please run', bold=True),
+        white('If you were trying to uninstall, Please run', bold=True),
         magenta('pip uninstall react-pages', bold=True),
-        white('. It should work now.', bold=True)
+        white('.\nIt should work now.')
     ))
 
 
@@ -429,7 +430,7 @@ cli.add_command(init_page)
 cli.add_command(deploy)
 cli.add_command(develop)
 cli.add_command(runserver)
-cli.add_command(uninstall)
+cli.add_command(clear_cache)
 
 if __name__ == '__main__':
     cli()
