@@ -52,12 +52,18 @@ __settings.py__
 ```
 INSTALLED_APPS = [
     ...
-    'react_pages_django',
+    'react_pages',
     ...
 ]
 
-# Assuming your React Pages project is at BASE_DIR,
-REACT_PAGES_PROJECT_DIR = os.path.join(BASE_DIR, 'poll_react_pages')
+# React Pages
+REACT_PAGES_PROJECT_DIR = os.path.join(BASE_DIR, 'my_project')  # specify the react-pages project
+
+STATICFILES_DIRS = [
+    ...
+    os.path.join(REACT_PAGES_PROJECT_DIR, 'build')  # mark the build dir as static file dir
+    ...
+]
 ```
 
 __template.html__
@@ -68,8 +74,10 @@ __template.html__
 ...
 ```
 
+**Remeber to use `react-pages runserver` instead of `manage.py runserver`!**
+
 That's it!
-React Pages will pick-up the "vote" page from "poll_react_pages" project and do the nessecary work to transpile react code.
+React Pages will pick-up the "vote" page from "poll_react_pages" project and do the necessary work to transpire react JSX.
 
 ###### Django Context
 
@@ -90,7 +98,7 @@ For production, just put `DEBUG=False` in `settings.py` and relax.
 
 ## Existing projects
 
-React Pages will automatically patch itslef into any existing project,
+React Pages will automatically patch itsef into any existing project,
 that was created using `create-react-app`.
 
 Just run `react-pages project .` from your project directory!
