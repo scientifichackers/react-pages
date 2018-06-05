@@ -9,17 +9,24 @@
 ## Terminology
 
 #### Project
-The project contains the node.js modules necessary to use react, some other js files, required by react pages itself and the pages you add.
+The project contains the node.js modules necessary to use react and the pages you create.
 
 ```
 └── project
     ├── package.json
-    └── package-lock.json
+    ├── package-lock.json
+    ├── .env
+    ├── .gitignore
+    ├── public
+    │   ├── favicon.ico
+    │   ├── index.html
+    │   └── manifest.json
+    <pages>
 ```
 
 #### Page:
 
-A page is a directory containing at least an `index.js` file, (and probably other css/js files specific to your application.)
+A page is a directory containing at least an `index.js` file, (and other css/js files specific to your application.)
 
 ```
 └── page
@@ -44,6 +51,8 @@ $ react-pages page vote # create a page
 $ react-pages react_pages # development
 
 $ react-pages deploy # production
+
+$ react-pages runserver # django runserver alternative
 ```
 
 ## Django Integration
@@ -79,7 +88,7 @@ __template.html__
 That's it!
 React Pages will pick-up the "vote" page from "poll_react_pages" project and do the necessary work to transpire react JSX.
 
-###### Django Context
+##### Django Context
 
 You can pass django template context varialbes like so -
 
