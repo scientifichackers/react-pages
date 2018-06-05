@@ -2,4 +2,5 @@ recursive-include react_pages/nodejs/config *
 recursive-include react_pages/nodejs/public *
 recursive-include react_pages/nodejs/scripts *
 recursive-include react_pages/nodejs/src *
+recursive-include react_pages/templates *
 include react_pages/nodejs/*
