@@ -109,17 +109,17 @@ You can pass django template context varialbes like so -
 
 __views.py__<br>
 ```python
-context['py_numbers'] = [1, 2, 3]
+context['py_list'] = [1, 2, 3]
 ```
 
 __template.html__<br>
 ```html
-{% render_react_page 'my_page' js_numbers=py_numbers %}
+{% render_react_page 'my_page' js_list=py_list %}
 ```
 
 __App.js__<br>
 ```js
-console.log(js_numbers);
+console.log(js_list);
 ```
 
 **Note: These must be JSON serialize-able**
