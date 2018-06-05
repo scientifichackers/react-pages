@@ -108,13 +108,19 @@ React Pages will pick-up the "my_page" page from "my_project"
 You can pass django template context varialbes like so -
 
 __views.py__<br>
-`context['py_numbers'] = [1, 2, 3]`
+```python
+context['py_numbers'] = [1, 2, 3]
+```
 
 __template.html__<br>
-`{% render_react_page 'my_page' js_numbers=py_numbers %}`
+```html
+{% render_react_page 'my_page' js_numbers=py_numbers %}
+```
 
 __App.js__<br>
-`console.log(js_numbers);`
+```js
+console.log(js_numbers);
+```
 
 **Note: These must be JSON serialize-able**
 
