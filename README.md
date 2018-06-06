@@ -1,18 +1,25 @@
 # React Pages
 ##### A zero-fuss way to create non single page apps with react.
 
-- Zero Configuration required. Mostly thanks to [create-react-app](https://github.com/facebook/create-react-app).
-- [Custom react scripts](https://github.com/kitze/custom-react-scripts) inbuilt.
-- Cross-page import (create-react-app [doesn't allow this](https://github.com/facebook/create-react-app/issues/834)).
-- Ready-to-serve production builds with the proper paths. (using `--static-url` option)
+- Zero Configuration required.
+   Mostly thanks to
+   [create-react-app](https://github.com/facebook/create-react-app).
+- [Custom react scripts](https://github.com/kitze/custom-react-scripts)
+   inbuilt.
+- Import non-compiled JSX from anywhere
+   (create-react-app [doesn't allow this](https://github.com/facebook/create-react-app/issues/834)).
+- Ready-to-serve production builds with the proper paths.
+    (using `--static-url` option)
 - Natively use react in django.
 - Go from development to production with ease.
-- Caches npm stuff. You'll notice that the command `react-pages project` runs much after the 1st time.
+- Caches npm stuff. You'll notice that the command `react-pages project`
+    runs much after the 1st time.
 
 ## Terminology
 
 #### Project
-The project contains the node.js modules necessary to use react and the pages you create.
+The project contains the node.js modules necessary
+ to use react and the pages you create.
 
 ```
 └── my_project
@@ -29,7 +36,8 @@ The project contains the node.js modules necessary to use react and the pages yo
 
 #### Page:
 
-A page is a directory containing at least an `index.js` file, (and other css/js files specific to your application.)
+A page is a directory containing at least an `index.js` file,
+(and other css/js files specific to your application.)
 
 ```
 └── my_page
@@ -42,28 +50,49 @@ A page is a directory containing at least an `index.js` file, (and other css/js 
     └── registerServiceWorker.js
 ```
 
-## QuickStart
-
-You need npm on your machine!
-
-[![PyPI version (tag)](https://img.shields.io/badge/pip-0.1.5-blue.svg?longCache=true&style=for-the-badge)](https://pypi.org/project/react-pages/)
+## Install
+[![PyPI version (tag)](https://img.shields.io/badge/pip-0.1.6-blue.svg?longCache=true&style=for-the-badge)](https://pypi.org/project/react-pages/)
 
 `pip install react-pages`
 
-*Commands :*
+License: MIT License (MIT)<br>
+Requires: Python >=3.6
+
+---
+
+If you don't have node, <br>
+
+For bash, use [nvm](https://github.com/creationix/nvm#installation).
+
+For fish shell, you can use `fisher fnm`
+([get fisher](https://github.com/fisherman/fisherman)).
+
+Once you have npm/node, react pages will work as expected.
+
+*TODO: make react-pages automatically install node*
+
+## Commands
 
 ```sh
-$ react-pages project my_project # create a project
+# Basic
 
-$ cd my_project # Don't forget to do this!
+$ react-pages project my_project # create a "project"
 
-$ react-pages page my_page # create a page
+$ cd my_project # don't forget to do this!
+
+$ react-pages page my_page # create a "page"
 
 $ react-pages develop # development
 
 $ react-pages deploy # production
 
+# (open ./my_project/build/my_page/index.html in browser)
+
+# Misc
+
 $ react-pages runserver # django runserver alternative
+
+$ react-pages clear-cache
 ```
 
 ## Django Integration
@@ -78,12 +107,12 @@ INSTALLED_APPS = [
     ...
 ]
 
-# React Pages
-REACT_PAGES_PROJECT_DIR = os.path.join(BASE_DIR, 'my_project')  # specify the react-pages project
+# specify the react-pages project directory
+REACT_PAGES_PROJECT_DIR = os.path.join(BASE_DIR, 'my_project')
 
 STATICFILES_DIRS = [
     ...
-    os.path.join(REACT_PAGES_PROJECT_DIR, 'build')  # mark the build dir as static file dir
+    os.path.join(REACT_PAGES_PROJECT_DIR, 'build')  # mark the build dir as a static file dir
     ...
 ]
 ```
@@ -109,17 +138,17 @@ You can pass django template context varialbes like so -
 
 __views.py__<br>
 ```python
-context['py_list'] = [1, 2, 3]
+context['py_var'] = [1, 2, 3]
 ```
 
 __template.html__<br>
 ```html
-{% render_react_page 'my_page' js_list=py_list %}
+{% render_react_page 'my_page' js_var=py_var %}
 ```
 
 __App.js__<br>
 ```js
-console.log(js_list);
+console.log(js_var);
 ```
 
 **Note: These must be JSON serializable or JSON serialized.**
@@ -144,3 +173,10 @@ Projects not using `create-react-app` will probably work,
   This is a side-effect of react-page's caching.<br>
   As a temporary fix, Run `react-pages clear-cache`,
   and then `pip uninstall react-pages` will work as expected.
+
+---
+
+<a href="https://www.buymeacoffee.com/u75YezVri" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/black_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
+
+[🐍🏕️](http://www.pycampers.com/)
+

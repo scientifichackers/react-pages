@@ -143,7 +143,7 @@ def copy_files_safe(src_dir: Path, names: Iterable[str], dest_dir: Path):
                     shutil.copy(src, dest)
 
 
-def _build(source: str, destination: str, no_watch: bool, verbose: bool, static_url: str, *, deploy=False):
+def build(source: str, destination: str, no_watch: bool, verbose: bool, static_url: str, *, deploy=False):
     settings_list = []
     for src_path, dest_dir, public_dir in resolve_paths(source, destination):
         npm_root = get_npm_root()
@@ -223,7 +223,7 @@ def get_build_decorator(*, deploy):
                       ''')
         @wraps(func)
         def wrapper(*args, **kwargs):
-            return _build(*args, **kwargs, deploy=deploy)
+            return build(*args, **kwargs, deploy=deploy)
 
         return wrapper
 

@@ -145,9 +145,6 @@ module.exports = function get_custom_config(settings) {
                         // Process JS with Babel.
                         {
                             test: /\.(js|jsx)$/,
-                            // include: paths.appSrc,
-                            include: settings['npm prefix'],
-                            exclude: [settings['npm root'], settings['dest dir']],
                             loader: require.resolve('babel-loader'),
                             options: {
                                 babelrc: false,
