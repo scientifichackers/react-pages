@@ -41,7 +41,7 @@ def render_react_page(page_name, **js_context):
 
         for key, val in js_context.items():
             # If its a django model instance, we can handle that.
-            if issubclass(val, Model):
+            if isinstance(val, Model):
                 js_context[key] = serialize_django_model_instance(val)
             else:
                 # If already JSON serialized, we don't do it again.

@@ -51,7 +51,7 @@ A page is a directory containing at least an `index.js` file,
 ```
 
 ## Install
-[![PyPI version (tag)](https://img.shields.io/badge/pip-0.2.2-blue.svg?longCache=true&style=for-the-badge)](https://pypi.org/project/react-pages/)
+[![PyPI version (tag)](https://img.shields.io/badge/pip-0.2.3-blue.svg?longCache=true&style=for-the-badge)](https://pypi.org/project/react-pages/)
 
 `pip install react-pages`
 
@@ -153,8 +153,9 @@ console.log(js_var);
 
 **Note: These must be JSON serializable or JSON serialized.**
 
-### For production, just put `DEBUG=False` in `settings.py` and relax.
+#### For production, just put `DEBUG=False` in `settings.py` and relax.
 **Note: This is not implemented yet.**
+
 
 ## Existing projects
 
