@@ -315,7 +315,7 @@ def init_page(page_name):
         # update .env
         dotenv_path = Path.cwd() / '.env'
         if dotenv_path.exists():
-            node_path = dotenv.get_key(str(dotenv_path), 'NODE_PATH') or ""
+            node_path = dotenv.get_key(str(dotenv_path), 'NODE_PATH') or "."
             page_node_path = os.path.relpath(page_dir, dotenv_path.parent)
 
             if page_node_path not in node_path.split(os.pathsep):
