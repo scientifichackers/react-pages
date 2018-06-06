@@ -152,10 +152,18 @@ def courtesy_notice(msg):
 
 
 def build(source: str, destination: str, no_watch: bool, verbose: bool, static_url: str, *, deploy=False):
+    npm_root = get_npm_root()
+    npm_prefix = get_npm_prefix()
+
     settings_list = []
     for src_path, dest_dir, public_dir in resolve_paths(source, destination):
-        npm_root = get_npm_root()
-        npm_prefix = get_npm_prefix()
+        print(
+            '{} {} ~> {}…'.format(
+                white('Deploy:' if deploy else 'Develop:', bold=True),
+                magenta(src_path, bold=True),
+                green(dest_dir, bold=True)
+            )
+        )
 
         copy_files_safe(public_dir, ('favicon.ico', 'manifest.json'), dest_dir)
 
@@ -167,13 +175,8 @@ def build(source: str, destination: str, no_watch: bool, verbose: bool, static_u
             })
 
         settings_list.append({
-            'start msg': '{} {} ~> {}…'.format(
-                white('Deploy:' if deploy else 'Develop:', bold=True),
-                magenta(src_path, bold=True),
-                green(dest_dir, bold=True)
-            ),
             'inbuilt node_modules': str(NODEJS / 'node_modules'),
-            'complete msg': str(green(src_path.parent.name, bold=True)),
+            'page name': str(green(src_path.parent.name, bold=True)),
             'deploy': deploy,
             'src': str(src_path),
             'src dir': str(src_path.parent),

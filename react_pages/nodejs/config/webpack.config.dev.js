@@ -158,6 +158,8 @@ module.exports = function get_custom_config(settings) {
             {
               test: /\.(js|jsx)$/,
               loader: require.resolve('babel-loader'),
+              include: settings['npm prefix'],
+              exclude: [/node_modules/, /build/],
               options: {
                 babelrc: false,
                 presets: [require.resolve('babel-preset-react-app')].concat(

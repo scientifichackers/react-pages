@@ -43,42 +43,32 @@ function react_pages(settings_list_json) {
     get_custom_config = require('../config/webpack.config.dev');
   }
 
-  const spinner = ora({'spinner': 'moon'});
+  const spinner = ora({'spinner': 'moon'}).start();
 
   for (const settings of settings_list) {
-    spinner.stop();
-    console.log(settings['start msg']);
-    spinner.start();
-
     const config = get_custom_config(settings);
 
     // console.debug('webpack config:', util.inspect(config, false, null));
     const compiler = webpack(config);
 
     const handle_output = (err, stats) => {
-      const was_spinning = spinner.isSpinning;
-
-      // handle webpack output and print out in proper format
+      let to_print;
       if (err) {
-        if (was_spinning) spinner.stop();
+        to_print = err.stack || err;
 
-        console.error(err.stack || err);
         if (err.details) {
-          console.error(err.details);
+          to_print += '\n' + err.details;
         }
-
-        if (was_spinning) spinner.start();
-        return
+      }
+      else {
+        to_print = stats.toString(verbose ? verbose_opts : normal_opts)
       }
 
+      const was_spinning = spinner.isSpinning;
       if (was_spinning) spinner.stop();
-
-      console.log();
-      console.log(
-          stats.toString(verbose ? verbose_opts : normal_opts)
-      );
-      console.log();
-
+      if (to_print) {
+        console.log(to_print);
+      }
       if (was_spinning) spinner.start();
     };
 
@@ -92,15 +82,40 @@ function react_pages(settings_list_json) {
     compiler.apply(
         new webpack.ProgressPlugin((handler) => {
           if (handler === 0) {
-            spinner.stop();
-            console.log(settings['start msg']);
             spinner.start();
           }
           if (handler === 1) {
-            spinner.succeed(settings['complete msg']);
+            spinner.succeed(settings['page name'] + '  ( ' + timeStamp() + ' )');
             spinner.stop()
           }
         })
     );
   }
+}
+
+function timeStamp() {
+  // Create a date object with the current time
+  const now = new Date();
+
+  // Create an array with the current hour, minute and second
+  const time = [now.getHours(), now.getMinutes(), now.getSeconds()];
+
+  // Determine AM or PM suffix based on the hour
+  const suffix = (time[0] < 12) ? "AM" : "PM";
+
+  // Convert hour from military time
+  time[0] = (time[0] < 12) ? time[0] : time[0] - 12;
+
+  // If hour is 0, set it to 12
+  time[0] = time[0] || 12;
+
+  // If seconds and minutes are less than 10, add a zero
+  for (let i = 1; i < 3; i++) {
+    if (time[i] < 10) {
+      time[i] = "0" + time[i];
+    }
+  }
+
+  // Return the formatted string
+  return time.join(":") + " " + suffix;
 }

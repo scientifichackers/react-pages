@@ -6,7 +6,7 @@
    [create-react-app](https://github.com/facebook/create-react-app).
 - [Custom react scripts](https://github.com/kitze/custom-react-scripts)
    inbuilt.
-- Import non-compiled JSX from anywhere
+- Allows cross-page imports
    (create-react-app [doesn't allow this](https://github.com/facebook/create-react-app/issues/834)).
 - Ready-to-serve production builds with the proper paths.
     (using `--static-url` option)
@@ -51,7 +51,7 @@ A page is a directory containing at least an `index.js` file,
 ```
 
 ## Install
-[![PyPI version (tag)](https://img.shields.io/badge/pip-0.2.0-blue.svg?longCache=true&style=for-the-badge)](https://pypi.org/project/react-pages/)
+[![PyPI version (tag)](https://img.shields.io/badge/pip-0.2.1-blue.svg?longCache=true&style=for-the-badge)](https://pypi.org/project/react-pages/)
 
 `pip install react-pages`
 
