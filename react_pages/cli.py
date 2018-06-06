@@ -11,7 +11,6 @@ import dotenv
 from crayons import *
 from halo import Halo
 
-# beauty stuff
 SPINNER = 'moon'
 
 NODEJS = Path(__file__).parent.joinpath('nodejs')
@@ -122,10 +121,6 @@ def resolve_src_paths(src: str) -> Iterable[Path]:
         yield src
 
 
-def courtesy_notice(msg):
-    print(cyan(f"Courtesy Notice: {msg}", bold=True))
-
-
 def copy_files_safe(src_dir: Path, names: Iterable[str], dest_dir: Path):
     for filename in names:
         src = src_dir / filename
@@ -141,6 +136,10 @@ def copy_files_safe(src_dir: Path, names: Iterable[str], dest_dir: Path):
 
                 if not dest.exists():
                     shutil.copy(src, dest)
+
+
+def courtesy_notice(msg):
+    print(cyan(f"Courtesy Notice: {msg}", bold=True))
 
 
 def build(source: str, destination: str, no_watch: bool, verbose: bool, static_url: str, *, deploy=False):
@@ -313,11 +312,15 @@ def init_page(page_name):
     else:
         print(blue(f'Copied page boilerplate to {page_dir}'))
 
+        # update .env
         dotenv_path = Path.cwd() / '.env'
         if dotenv_path.exists():
             node_path = dotenv.get_key(str(dotenv_path), 'NODE_PATH') or ""
-            node_path = os.pathsep + node_path + os.path.relpath(page_dir, dotenv_path.parent)
-            dotenv.set_key(str(dotenv_path), 'NODE_PATH', node_path)
+            page_node_path = os.path.relpath(page_dir, dotenv_path.parent)
+
+            if page_node_path not in node_path.split(os.pathsep):
+                node_path += os.pathsep + page_node_path
+                dotenv.set_key(str(dotenv_path), 'NODE_PATH', node_path)
 
         print(
             '{} {} {}'.format(
