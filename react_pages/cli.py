@@ -422,9 +422,11 @@ def runserver(runserver_args):
         print(red('"manage.py" not found. Please run this command from a directory containing "manage.py".'))
 
 
-@click.command('clear-cache', short_help="Fix a bug where react-pages can't be uninstalled using pip")
+@click.command('clear-cache', short_help="Clear the npm cache")
 def clear_cache():
     """
+    Clears the npm cache
+
     Because of react-pages's structure, react-pages may not uninstall using pip.
 
     To overcome this, this handy script is provided.
@@ -442,12 +444,26 @@ def clear_cache():
     ))
 
 
+@click.command(short_help="Rebuild the npm cache")
+def cache():
+    print(white('Installing node modules…'))
+
+    run_subproc(
+        ['/usr/bin/env', 'npm', 'install'],
+        cwd=NODEJS,
+        enable_spinner=True,
+    )
+
+    print(cyan('Done!'))
+
+
 cli.add_command(init)
 cli.add_command(init_page)
 cli.add_command(deploy)
 cli.add_command(develop)
 cli.add_command(runserver)
 cli.add_command(clear_cache)
+cli.add_command(cache)
 
 if __name__ == '__main__':
     cli()
