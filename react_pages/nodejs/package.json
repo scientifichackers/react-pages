@@ -52,6 +52,7 @@
     "webpack-dashboard": "^1.0.0-2",
     "webpack-dev-server": "2.7.1",
     "webpack-manifest-plugin": "1.2.1",
+    "webpack-mild-compile": "^3.2.0",
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {

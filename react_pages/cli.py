@@ -37,13 +37,22 @@ def handle_subproc_result(result, enable_spinner):
             exit(red('Failed!'))
 
 
+def print_cmd(cmd):
+    strcmd = ' '.join(map(str, cmd))
+
+    if len(strcmd) > 200:
+        strcmd = strcmd[:200] + ' ...'
+
+    print(yellow('Run: ' + strcmd))
+
+
 def run_subproc(cmd, *, enable_spinner=False, **kwargs):
     kwargs.setdefault('cwd', Path.cwd())
     if enable_spinner:
         kwargs.setdefault('stdout', subprocess.PIPE)
         kwargs.setdefault('stderr', subprocess.PIPE)
 
-    print(yellow('Run: ' + ' '.join(map(str, cmd))))
+    print_cmd(cmd)
 
     result = None
     try:
@@ -182,7 +191,7 @@ def build(source: str, destination: str, no_watch: bool, verbose: bool, static_u
         run_subproc(
             [
                 '/usr/bin/env', 'node',
-                get_npm_root() / 'react-pages' / 'scripts' / 'react_pages.js',
+                NODEJS / 'scripts' / 'react_pages.js',
                 json.dumps(settings_list)
             ],
             cwd=get_npm_prefix()
@@ -394,8 +403,13 @@ def runserver(runserver_args):
     """
 
     if (Path.cwd() / 'manage.py').exists():
-        proc1 = subprocess.Popen(['python', 'manage.py', 'react_pages', 'develop'])
-        proc2 = subprocess.run(['python', 'manage.py', 'runserver', *runserver_args])
+        cmd = ['python', 'manage.py', 'react_pages_develop']
+        print_cmd(cmd)
+        proc1 = subprocess.Popen(cmd)
+
+        cmd = ['python', 'manage.py', 'runserver', *runserver_args]
+        print_cmd(cmd)
+        proc2 = subprocess.run(cmd)
 
         proc1.terminate()
         proc1.wait()
