@@ -1,30 +1,29 @@
-'use strict';
+"use strict";
 
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
-const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+const path = require("path");
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
+const InterpolateHtmlPlugin = require("react-dev-utils/InterpolateHtmlPlugin");
+const WatchMissingNodeModulesPlugin = require("react-dev-utils/WatchMissingNodeModulesPlugin");
 // const eslintFormatter = require('react-dev-utils/eslintFormatter');
 // const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
-const getClientEnvironment = require('./env');
+const getClientEnvironment = require("./env");
 // const paths = require('./paths');
-const getCustomConfig = require('./custom-react-scripts/config');
+const getCustomConfig = require("./custom-react-scripts/config");
 
-const get_custom_paths = require('./customPaths');
-const WebpackMildCompile = require('webpack-mild-compile').Plugin;
+const WebpackMildCompile = require("webpack-mild-compile").Plugin;
 
 module.exports = function get_custom_config(settings) {
-  const paths = get_custom_paths(settings);
+  // const paths = get_custom_paths(settings);
 
   // Webpack uses `publicPath` to determine where the app is being served from.
   // In development, we always serve from the root. This makes config easier.
-  const publicPath = settings['public url'] + '/';
+  const publicPath = settings["public url"] + "/";
   // `publicUrl` is just like `publicPath`, but we will provide it to our app
   // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
   // Omit trailing slash as %PUBLIC_PATH%/xyz looks better than %PUBLIC_PATH%xyz.
-  const publicUrl = settings['public url'];
+  const publicUrl = settings["public url"];
   // Get environment variables to inject into our app.
   const env = getClientEnvironment(publicUrl);
   //Get custom configuration for injecting plugins, presets and loaders
@@ -36,7 +35,7 @@ module.exports = function get_custom_config(settings) {
   return {
     // You may want 'eval' instead if you prefer to see the compiled output in DevTools.
     // See the discussion in https://github.com/facebookincubator/create-react-app/issues/343.
-    devtool: 'cheap-module-source-map',
+    devtool: "cheap-module-source-map",
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
     // The first two entry points enable "hot" CSS and auto-refreshes for JS.
@@ -53,42 +52,46 @@ module.exports = function get_custom_config(settings) {
       // require.resolve('webpack/hot/dev-server'),
       // require.resolve('react-dev-utils/webpackHotDevClient'),
       // We ship a few polyfills by default:
-      require.resolve('./polyfills'),
+      require.resolve("./polyfills"),
       // Errors should be considered fatal in development
-      require.resolve('react-error-overlay'),
+      require.resolve("react-error-overlay"),
       // Finally, this is your app's code:
-      paths.appIndexJs,
+      settings["src path"]
       // We include the app code last so that if there is a runtime error during
       // initialization, it doesn't blow up the WebpackDevServer client, and
       // changing JS code would still trigger a refresh.
     ],
     output: {
       // Next line is not used in dev but WebpackDevServer crashes without it:
-      path: paths.appBuild,
+      path: settings["dest dir"],
       // Add /* filename */ comments to generated require()s in the output.
       pathinfo: true,
       // This does not produce a real file. It's just the virtual path that is
       // served by WebpackDevServer in development. This is the JS bundle
       // containing code from all our entry points, and the Webpack runtime.
-      filename: 'js/bundle.js',
+      filename: "js/bundle.js",
       // There are also additional JS chunk files if you use code splitting.
-      chunkFilename: 'js/[name].chunk.js',
+      chunkFilename: "js/[name].chunk.js",
       // This is the URL that app is served from. We use "/" in development.
       publicPath: publicPath,
       // Point sourcemap entries to original disk location (format as URL on Windows)
       devtoolModuleFilenameTemplate: info =>
-          path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
+        path
+          .relative(settings["dest dir"], info.absoluteResourcePath)
+          .replace(/\\/g, "/")
     },
     resolve: {
       // This allows you to set a fallback for where Webpack should look for modules.
       // We placed these paths second because we want `node_modules` to "win"
       // if there are any conflicts. This matches Node resolution mechanism.
       // https://github.com/facebookincubator/create-react-app/issues/253
-      modules: ['node_modules', paths.appNodeModules].concat(
-          // It is guaranteed to exist because we tweak it in `env.js`
-          process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
-      ).concat(
-          [settings['inbuilt node_modules']]
+      modules: [
+        settings["node_modules"],
+        settings["react-pages node_modules"],
+        settings["npm prefix"]
+      ].concat(
+        // It is guaranteed to exist because we tweak it in `env.js`
+        process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
       ),
       // These are the reasonable defaults supported by the Node ecosystem.
       // We also include JSX as a common component filename extension to support
@@ -96,13 +99,12 @@ module.exports = function get_custom_config(settings) {
       // https://github.com/facebookincubator/create-react-app/issues/290
       // `web` extension prefixes have been added for better support
       // for React Native Web.
-      extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx'],
+      extensions: [".web.js", ".js", ".json", ".web.jsx", ".jsx"],
       alias: {
-
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-        'react-native': 'react-native-web',
-      },
+        "react-native": "react-native-web"
+      }
       // plugins: [
       //   // Prevents users from importing files from outside of src/ (or node_modules/).
       //   // This often causes confusion because we only process files within src/ with babel.
@@ -148,29 +150,29 @@ module.exports = function get_custom_config(settings) {
             // A missing `test` is equivalent to a match.
             {
               test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-              loader: require.resolve('url-loader'),
+              loader: require.resolve("url-loader"),
               options: {
                 limit: 10000,
-                name: 'media/[name].[hash:8].[ext]',
-              },
+                name: "media/[name].[hash:8].[ext]"
+              }
             },
             // Process JS with Babel.
             {
               test: /\.(js|jsx)$/,
-              loader: require.resolve('babel-loader'),
-              include: settings['npm prefix'],
+              loader: require.resolve("babel-loader"),
+              include: settings["npm prefix"],
               exclude: [/node_modules/, /build/],
               options: {
                 babelrc: false,
-                presets: [require.resolve('babel-preset-react-app')].concat(
-                    customConfig.babelPresets
+                presets: [require.resolve("babel-preset-react-app")].concat(
+                  customConfig.babelPresets
                 ),
                 plugins: customConfig.babelPlugins,
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/
                 // directory for faster rebuilds.
-                cacheDirectory: true,
-              },
+                cacheDirectory: true
+              }
             },
             ...customConfig.webpackLoaders,
             // "file" loader makes sure those assets get served by WebpackDevServer.
@@ -184,16 +186,16 @@ module.exports = function get_custom_config(settings) {
               // Also exclude `html` and `json` extensions so they get processed
               // by webpacks internal loaders.
               exclude: [/\.js$/, /\.html$/, /\.json$/],
-              loader: require.resolve('file-loader'),
+              loader: require.resolve("file-loader"),
               options: {
-                name: 'media/[name].[hash:8].[ext]',
-              },
-            },
-          ],
-        },
+                name: "media/[name].[hash:8].[ext]"
+              }
+            }
+          ]
+        }
         // ** STOP ** Are you adding a new loader?
         // Make sure to add the new loader(s) before the "file" loader.
-      ],
+      ]
     },
     plugins: [
       // Makes some environment variables available in index.html.
@@ -204,7 +206,7 @@ module.exports = function get_custom_config(settings) {
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin({
         inject: true,
-        template: paths.appHtml,
+        template: settings["html template"]
       }),
       // Add module names to factory functions so they appear in browser profiler.
       new webpack.NamedModulesPlugin(),
@@ -221,7 +223,7 @@ module.exports = function get_custom_config(settings) {
       // to restart the development server for Webpack to discover it. This plugin
       // makes the discovery automatic so you don't have to restart.
       // See https://github.com/facebookincubator/create-react-app/issues/186
-      new WatchMissingNodeModulesPlugin(paths.appNodeModules),
+      new WatchMissingNodeModulesPlugin(settings["node_modules"]),
       // Moment.js is an extremely popular library that bundles large locale files
       // by default due to how Webpack interprets its code. This is a practical
       // solution that requires the user to opt into importing specific locales.
@@ -230,22 +232,21 @@ module.exports = function get_custom_config(settings) {
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       ...customConfig.webpackPlugins,
       // Prevents infinite compile
-      new WebpackMildCompile(),
+      new WebpackMildCompile()
     ],
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.
     node: {
-      dgram: 'empty',
-      fs: 'empty',
-      net: 'empty',
-      tls: 'empty',
+      dgram: "empty",
+      fs: "empty",
+      net: "empty",
+      tls: "empty"
     },
     // Turn off performance hints during development because we don't do any
     // splitting or minification in interest of speed. These warnings become
     // cumbersome.
     performance: {
-      hints: false,
-    },
+      hints: false
+    }
   };
-
 };

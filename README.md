@@ -12,8 +12,9 @@
     (using `--static-url` option)
 - Natively use react in django.
 - Go from development to production with ease.
-- Caches npm stuff. You'll notice that the command `react-pages project`
-    runs much after the 1st time.
+- Donwloads npm packages only once, per virtualenv. <br>
+    This means creating a new project is **really fast**
+    (at the cost of installation time).
 
 ## Terminology
 
@@ -74,8 +75,6 @@ Once you have npm/node, react pages will work as expected.
 ## Commands
 
 ```sh
-# Basic
-
 $ react-pages project my_project # create a "project"
 
 $ cd my_project # don't forget to do this!
@@ -86,14 +85,16 @@ $ react-pages develop # development
 
 $ react-pages deploy # production
 
-# (open ./my_project/build/my_page/index.html in browser)
+# Open `./my_project/build/my_page/index.html` in browser
 
-# Misc
 
 $ react-pages runserver # django runserver alternative
 
+# installs the required npm packages, once and for all.
+# automatically run when required.
 $ react-pages cache
 
+# removes npm packages
 $ react-pages clear-cache
 ```
 
@@ -209,12 +210,6 @@ Projects not using `create-react-app` will probably work,
  but no guarantees can be made.
 
 ## Issues
-
-- It might not uninstall using pip.
-
-  This is a side-effect of react-page's caching.<br>
-  As a temporary fix, Run `react-pages clear-cache`,
-  and then `pip uninstall react-pages` will work as expected.
 
 ---
 

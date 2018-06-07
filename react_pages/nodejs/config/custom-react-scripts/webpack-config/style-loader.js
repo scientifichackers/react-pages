@@ -1,50 +1,48 @@
-const postCssOptions = require('../options/postcss-options');
-const extractTextPluginOptions = require('../options/extract-text-plugin-options');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
+const postCssOptions = require("../options/postcss-options");
+const extractTextPluginOptions = require("../options/extract-text-plugin-options");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== "false";
 const localIdentName =
   process.env.REACT_APP_CSS_MODULE_CLASSNAME_TEMPLATE ||
-  '[sha512:hash:base32]-[name]-[local]';
+  "[sha512:hash:base32]-[name]-[local]";
 
-module.exports = (loader, test, exclude, modules) => isDev => {
+module.exports = (loader, test, exclude, modules, options) => isDev => {
   let loaders = isDev
     ? [
         {
-          loader: require.resolve('style-loader'),
-        },
+          loader: require.resolve("style-loader")
+        }
       ]
     : [];
 
   loaders = loaders.concat([
     {
-      loader: require.resolve('css-loader'),
+      loader: require.resolve("css-loader"),
       options: Object.assign(
         { minimize: !isDev, sourceMap: shouldUseSourceMap },
         { importLoaders: 1 },
         modules === true
           ? {
               localIdentName: localIdentName,
-              modules: true,
+              modules: true
             }
           : {}
-      ),
+      )
     },
     {
-      loader: require.resolve('postcss-loader'),
+      loader: require.resolve("postcss-loader"),
       options: Object.assign(
         {},
         { sourceMap: shouldUseSourceMap },
         postCssOptions
-      ),
-    },
+      )
+    }
   ]);
 
   if (loader) {
     loaders.push({
       loader,
-      options: {
-        sourceMap: shouldUseSourceMap,
-      },
+      options: Object.assign({}, { sourceMap: shouldUseSourceMap }, options)
     });
   }
 
@@ -52,7 +50,7 @@ module.exports = (loader, test, exclude, modules) => isDev => {
     return {
       test,
       exclude,
-      use: loaders,
+      use: loaders
     };
   }
 
@@ -62,11 +60,11 @@ module.exports = (loader, test, exclude, modules) => isDev => {
     loader: ExtractTextPlugin.extract(
       Object.assign(
         {
-          fallback: require.resolve('style-loader'),
-          use: loaders,
+          fallback: require.resolve("style-loader"),
+          use: loaders
         },
         extractTextPluginOptions
       )
-    ),
+    )
   };
 };

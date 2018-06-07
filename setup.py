@@ -6,10 +6,15 @@
 
 import io
 import os
+import subprocess
 import sys
 from shutil import rmtree
 
 from setuptools import find_packages, setup, Command
+from setuptools.command.develop import develop
+from setuptools.command.install import install
+
+from react_pages.core import overwrite_cache_files
 
 # Package meta-data.
 NAME = 'react-pages'
@@ -18,7 +23,7 @@ URL = 'https://github.com/pycampers/react-pages'
 EMAIL = 'devxpy@gmail.com'
 AUTHOR = 'devxpy'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.2.3'
+VERSION = '0.2.4'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
@@ -76,7 +81,8 @@ class UploadCommand(Command):
             pass
 
         self.status('Building Source and Wheel (universal) distribution…')
-        os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
+        os.system('{0} setup.py sdist bdist_wheel --universal'.format(
+            sys.executable))
 
         self.status('Uploading the package to PyPi via Twine…')
         os.system('twine upload dist/*')
@@ -86,6 +92,27 @@ class UploadCommand(Command):
         os.system('git push --tags')
 
         sys.exit()
+
+
+def post_setup():
+    cache_dir = overwrite_cache_files()
+    subprocess.run(['/usr/bin/env', 'npm', 'install'], cwd=cache_dir)
+
+
+class PostDevelopCommand(develop):
+    """Post-installation for development mode."""
+
+    def run(self):
+        develop.run(self)
+        post_setup()
+
+
+class PostInstallCommand(install):
+    """Post-installation for installation mode."""
+
+    def run(self):
+        install.run(self)
+        post_setup()
 
 
 # Where the magic happens:
@@ -123,5 +150,7 @@ setup(
     # $ setup.py publish support.
     cmdclass={
         'upload': UploadCommand,
+        'develop': PostDevelopCommand,
+        'install': PostInstallCommand,
     },
 )
