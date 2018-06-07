@@ -92,12 +92,17 @@ $ react-pages deploy # production
 
 $ react-pages runserver # django runserver alternative
 
+$ react-pages cache
+
 $ react-pages clear-cache
 ```
 
 ## Django Integration
 
-### Quickstart
+### Remember to use `react-pages runserver` instead of `manage.py runserver`!
+(This was done to remove the manual build step).
+
+### Setup
 
 __settings.py__
 ```
@@ -117,6 +122,8 @@ STATICFILES_DIRS = [
 ]
 ```
 
+### Usage
+
 __template.html__
 ```
 {% load react_pages %}
@@ -125,8 +132,6 @@ __template.html__
 ...
 ```
 
-### Remember to use `react-pages runserver` instead of `manage.py runserver`!
-(This was done to remove the manual build step).
 
 That's it!<br>
 React Pages will pick-up the "my_page" page from "my_project"
@@ -152,6 +157,42 @@ console.log(js_var);
 ```
 
 **Note: These must be JSON serializable or JSON serialized.**
+
+### Class Based View
+__views.py__<br>
+```python
+from react_pages.views import ReactPageView
+
+Class MyPageView(ReactPageView):
+    page_name = 'my_page'
+```
+
+__urls.py__<br>
+```
+urlpatterns = [
+    ...
+    path('my_page/', views.MyPageView.as_view(), name="my page"),
+]
+```
+
+when you go over to 'my_page/' url,
+you'll see the react page rendered in its full glory!
+
+To pass the a context to JS, define a `get_js_context()` method
+
+__views.py__<br>
+```python
+Class MyPageView(ReactPageView):
+    page_name = 'my_page'
+
+    def get_js_context(self):
+        return {'js_var': 'Hello!'}
+```
+
+__App.js__
+```js
+console.log(js_var);
+```
 
 #### For production, just put `DEBUG=False` in `settings.py` and relax.
 **Note: This is not implemented yet.**
