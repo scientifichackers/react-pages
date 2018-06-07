@@ -15,6 +15,10 @@
 - Donwloads npm packages only once, per virtualenv. <br>
     This means creating a new project is **really fast**
     (at the cost of installation time).
+- Respect `NODE_ENV` var wherever possible
+    (see [.env](react_pages/nodejs/.env)). <br>
+- Supports sass-loader, essential for
+    [material-components-web](https://github.com/material-components/material-components-web).
 
 ## Terminology
 
@@ -95,6 +99,8 @@ $ react-pages cache
 
 # removes npm packages
 $ react-pages clear-cache
+
+$ react-pages clear-dir
 ```
 
 ## Django Integration

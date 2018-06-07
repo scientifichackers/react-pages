@@ -59,7 +59,7 @@ def cli():
     pass
 
 
-@click.command('project', short_help='Create a new project')
+@click.command('project', short_help='Start a new project')
 @click.argument('project-name', type=click.Path())
 def init_project(project_name):
     """
@@ -127,10 +127,16 @@ def init_project(project_name):
 
 
 @click.command('page',
-               short_help='Create a new page, inside a new directory, '
-                          'containing boiler-plate for react')
+               short_help='Create a new page')
 @click.argument('page-name', type=click.Path())
 def init_page(page_name):
+    """
+    Create a new page
+    inside a new directory,
+    containing boiler-plate for react
+
+    Also adds the page directory to NODE_PATH in .env
+    """
     check_cache()
 
     page_dir = Path.cwd() / page_name
@@ -166,7 +172,7 @@ def init_page(page_name):
         )
 
 
-@click.command(short_help='Start the Production build environment')
+@click.command(short_help='Start the Production environment')
 @get_build_decorator(deploy=True)
 def deploy():
     """
@@ -192,7 +198,7 @@ def deploy():
     check_cache()
 
 
-@click.command(short_help='Start the Development build environment')
+@click.command(short_help='Start the Development environment')
 @get_build_decorator(deploy=False)
 def develop():
     """
@@ -219,8 +225,7 @@ def develop():
 
 
 @click.command(
-    short_help='A combination of django `manage.py runserver` '
-               'and `react-pages develop`',
+    short_help='manage.py runserver alternative',
     context_settings={'ignore_unknown_options': True,
                       'allow_extra_args': True})
 @click.argument('runserver_args', nargs=-1)
@@ -267,9 +272,20 @@ def _clear_cache():
     clear_cahce()
 
 
-@click.command(short_help="Rebuild the cache")
-def cache():
+@click.command('build-cache', short_help="Rebuild the cache")
+def _build_cache():
+    """
+    Rebuild the npm cache.
+
+    Overwrites existing cache.
+    """
+
     build_cache()
+
+
+@click.command('cache-dir', short_help='Print out the cache dir')
+def cache():
+    print(CACHE_DIR)
 
 
 cli.add_command(init_project)
@@ -278,6 +294,7 @@ cli.add_command(deploy)
 cli.add_command(develop)
 cli.add_command(runserver)
 cli.add_command(_clear_cache)
+cli.add_command(_build_cache)
 cli.add_command(cache)
 
 if __name__ == '__main__':

@@ -6,26 +6,27 @@ const localIdentName =
   process.env.REACT_APP_CSS_MODULE_CLASSNAME_TEMPLATE ||
   "[sha512:hash:base32]-[name]-[local]";
 
+
 module.exports = (loader, test, exclude, modules, options) => isDev => {
   let loaders = isDev
     ? [
-        {
-          loader: require.resolve("style-loader")
-        }
-      ]
+      {
+        loader: require.resolve("style-loader")
+      }
+    ]
     : [];
 
   loaders = loaders.concat([
     {
       loader: require.resolve("css-loader"),
       options: Object.assign(
-        { minimize: !isDev, sourceMap: shouldUseSourceMap },
-        { importLoaders: 1 },
+        {minimize: !isDev, sourceMap: shouldUseSourceMap},
+        {importLoaders: 1},
         modules === true
           ? {
-              localIdentName: localIdentName,
-              modules: true
-            }
+            localIdentName: localIdentName,
+            modules: true
+          }
           : {}
       )
     },
@@ -33,7 +34,7 @@ module.exports = (loader, test, exclude, modules, options) => isDev => {
       loader: require.resolve("postcss-loader"),
       options: Object.assign(
         {},
-        { sourceMap: shouldUseSourceMap },
+        {sourceMap: shouldUseSourceMap},
         postCssOptions
       )
     }
@@ -42,7 +43,7 @@ module.exports = (loader, test, exclude, modules, options) => isDev => {
   if (loader) {
     loaders.push({
       loader,
-      options: Object.assign({}, { sourceMap: shouldUseSourceMap }, options)
+      options: Object.assign({}, {sourceMap: shouldUseSourceMap}, options)
     });
   }
 

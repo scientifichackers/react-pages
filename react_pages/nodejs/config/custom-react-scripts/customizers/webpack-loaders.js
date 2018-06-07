@@ -3,6 +3,9 @@ const sassLoader = require.resolve("sass-loader");
 const lessLoader = require.resolve("less-loader");
 const stylusLoader = require.resolve("stylus-loader");
 
+const path = require('path');
+const env_paths = process.env.NODE_PATH.split(path.delimiter).filter(Boolean);
+
 module.exports = {
   CSS: {
     default: true,
@@ -10,7 +13,7 @@ module.exports = {
   },
   SASS: {
     get: styleLoader(sassLoader, /\.s[ac]ss$/, /\.module\.s[ac]ss$/, false, {
-      includePaths: ["./node_modules"]
+      includePaths: env_paths
     })
   },
   LESS: {
@@ -27,7 +30,7 @@ module.exports = {
   },
   SASS_MODULES: {
     get: styleLoader(sassLoader, /\.module\.s[ac]ss$/, undefined, true, {
-      includePaths: ["./node_modules"]
+      includePaths: env_paths
     })
   },
   CSS_MODULES: {
