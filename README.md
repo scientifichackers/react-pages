@@ -88,16 +88,17 @@ $ react-pages develop # development
 
 $ react-pages deploy # production
 
+
 # Open `./my_project/build/my_page/index.html` in browser
 
 
 $ react-pages runserver # django runserver alternative
 
-$ react-pages build-cache
+$ react-pages --build-cache # rebuild the cache
 
-$ react-pages clear-cache
+$ react-pages --rm # clear the cache
 
-$ react-pages cache-dir
+$ react-pages --cache # ouput the cache dir
 ```
 
 ## Django Integration

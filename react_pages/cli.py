@@ -9,7 +9,7 @@ import click
 import dotenv
 from crayons import *
 
-from react_pages.core import build, build_cache, clear_cahce, \
+from react_pages.core import build, do_build_cache, clear_cahce, \
     CACHE_DIR, PACKAGE_JSON, copy_files_safe, print_truncated
 
 SPINNER = 'moon'
@@ -51,12 +51,7 @@ def get_build_decorator(*, deploy):
 def check_cache():
     if not CACHE_DIR.exists():
         print(red('Missing react-pages cache dir!', bold=True))
-        build_cache()
-
-
-@click.group()
-def cli():
-    pass
+        do_build_cache()
 
 
 @click.command('project', short_help='Start a new project')
@@ -267,25 +262,22 @@ def runserver(runserver_args):
             'directory containing "manage.py".'))
 
 
-@click.command('clear-cache', short_help="Clear the cache")
-def _clear_cache():
-    clear_cahce()
+@click.group(invoke_without_command=True)
+@click.option('--cache', help='Output the cache location.', is_flag=True)
+@click.option('--build-cache', help='Rebuild the cache.', is_flag=True)
+@click.option('--rm', help='Clear the cache.', is_flag=True)
+def cli(cache, build_cache, rm):
+    if cache:
+        print(CACHE_DIR)
+        exit()
 
+    if build_cache:
+        do_build_cache()
+        exit()
 
-@click.command('build-cache', short_help="Rebuild the cache")
-def _build_cache():
-    """
-    Rebuild the npm cache.
-
-    Overwrites existing cache.
-    """
-
-    build_cache()
-
-
-@click.command('cache-dir', short_help='Print out the cache dir')
-def cache():
-    print(CACHE_DIR)
+    if rm:
+        clear_cahce()
+        exit()
 
 
 cli.add_command(init_project)
@@ -293,9 +285,6 @@ cli.add_command(init_page)
 cli.add_command(deploy)
 cli.add_command(develop)
 cli.add_command(runserver)
-cli.add_command(_clear_cache)
-cli.add_command(_build_cache)
-cli.add_command(cache)
 
 if __name__ == '__main__':
     cli()

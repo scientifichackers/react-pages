@@ -42,7 +42,7 @@ def overwrite_cache_files():
     return CACHE_DIR
 
 
-def build_cache():
+def do_build_cache():
     print(white('Building cache…', bold=True))
     print(blue(f'Cache dir: {CACHE_DIR}'))
 
