@@ -3,10 +3,11 @@ from pathlib import Path
 
 from django import template
 from django.conf import settings
+from django.core import serializers
 from django.core.exceptions import ImproperlyConfigured
 from django.core.serializers import serialize
 from django.core.serializers.json import DjangoJSONEncoder
-from django.db.models import Model
+from django.db.models import Model, QuerySet
 
 register = template.Library()
 
@@ -41,7 +42,9 @@ def render_react_page(page_name, **js_context):
 
         for key, val in js_context.items():
             # If its a django model instance, we can handle that.
-            if isinstance(val, Model):
+            if isinstance(val, QuerySet):
+                js_context[key] = serializers.serialize("json", val)
+            elif isinstance(val, Model):
                 js_context[key] = serialize_django_model_instance(val)
             else:
                 # If already JSON serialized, we don't do it again.
