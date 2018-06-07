@@ -23,7 +23,7 @@ URL = 'https://github.com/pycampers/react-pages'
 EMAIL = 'devxpy@gmail.com'
 AUTHOR = 'devxpy'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.2.4'
+VERSION = '0.2.5'
 
 # What packages are required for this module to be executed?
 REQUIRED = [

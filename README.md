@@ -52,7 +52,6 @@ A page is a directory containing at least an `index.js` file,
 ```
 
 ## Install
-[![PyPI version (tag)](https://img.shields.io/badge/pip-0.2.3-blue.svg?longCache=true&style=for-the-badge)](https://pypi.org/project/react-pages/)
 
 `pip install react-pages`
 
