@@ -164,7 +164,7 @@ __views.py__<br>
 ```python
 from react_pages.views import ReactPageView
 
-Class MyPageView(ReactPageView):
+class MyPageView(ReactPageView):
     page_name = 'my_page'
 ```
 
@@ -183,7 +183,7 @@ To pass the a context to JS, define a `get_js_context()` method
 
 __views.py__<br>
 ```python
-Class MyPageView(ReactPageView):
+class MyPageView(ReactPageView):
     page_name = 'my_page'
 
     def get_js_context(self):
