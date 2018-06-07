@@ -163,7 +163,7 @@ __views.py__<br>
 ```python
 from react_pages.views import ReactPageView
 
-Class MyPageView(ReactPageView):
+class MyPageView(ReactPageView):
     page_name = 'my_page'
 ```
 
