@@ -95,12 +95,12 @@ $ react-pages runserver # django runserver alternative
 
 # installs the required npm packages, once and for all.
 # automatically run when required.
-$ react-pages cache
+$ react-pages build-cache
 
 # removes npm packages
 $ react-pages clear-cache
 
-$ react-pages clear-dir
+$ react-pages cache-dir
 ```
 
 ## Django Integration
