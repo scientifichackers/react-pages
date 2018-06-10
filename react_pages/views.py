@@ -1,6 +1,7 @@
-from django.middleware import csrf
 from time import time
+
 from django.forms import Form
+from django.middleware import csrf
 from django.shortcuts import render
 from django.template.defaulttags import CsrfTokenNode
 from django.views.generic import View, FormView
@@ -67,7 +68,6 @@ FORM_FIELD_ATTRS = {
 }
 
 FORM_FIELD_METHODS = {"value", "label_tag", "css_classes", "as_widget", "as_hidden"}
-
 
 FORM_METHODS = {"as_p", "as_table", "as_ul", "non_field_errors"}
 

@@ -5,7 +5,6 @@ from django.conf import settings
 from django.core import serializers
 from django.core.exceptions import ImproperlyConfigured
 from django.core.serializers import serialize
-from django.core.serializers.json import DjangoJSONEncoder
 from django.db.models import Model, QuerySet
 
 try:

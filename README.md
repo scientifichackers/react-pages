@@ -218,7 +218,7 @@ __my_page/App.js__
 import React, { Component } from 'react';
 
 
-# see the magic in console!
+// see the magic in console!
 console.log(csrf_token);
 console.log(form);
 
