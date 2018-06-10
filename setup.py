@@ -18,7 +18,7 @@ from react_pages.core import overwrite_cache_files
 
 # Package meta-data.
 NAME = "react-pages"
-DESCRIPTION = "A zero-fuss way to create non single page apps with react."
+DESCRIPTION = "A zero-fuss way to create non-node apps with react."
 URL = "https://github.com/pycampers/react-pages"
 EMAIL = "devxpy@gmail.com"
 AUTHOR = "devxpy"
