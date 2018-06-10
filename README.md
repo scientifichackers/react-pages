@@ -1,7 +1,7 @@
 # React Pages
 ##### React Pages lets you use React freely in non-node environments, like Django.
 
-___sans_ React Pages__
+___sans_ React Pages__<br>
 [![Image](https://cdn-images-1.medium.com/max/800/1*B-kFzr8f4OF9rr6Ueg-UFg.png)](https://hackernoon.com/reconciling-djangos-mvc-templates-with-react-components-3aa986cf510a)
 
 
