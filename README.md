@@ -16,7 +16,7 @@
     This means creating a new project is **really fast**
     (at the cost of installation time).
 - Respect `NODE_ENV` var wherever possible
-    (see [.env](react_pages/nodejs/.env)). <br>
+    (see [.env](react_pages/nodejs/.env)).
 - Supports sass-loader, essential for
     [material-components-web](https://github.com/material-components/material-components-web).
 
@@ -247,8 +247,6 @@ Just run `react-pages project .` from your project directory!
 
 Projects not using `create-react-app` will probably work,
  but no guarantees can be made.
-
-## Issues
 
 ---
 
