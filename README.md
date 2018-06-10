@@ -141,21 +141,24 @@ That's it!<br>
 React Pages will pick-up the "my_page" page from "my_project"
  project and do the necessary work to transpile react JSX.
 
+#### For production, just put `DEBUG=False` in `settings.py` and relax.
+**Note: This is not implemented yet.**
+
 ### Django Context
 
 You can pass django template context varialbes like so -
 
-__views.py__<br>
+__views.py__
 ```python
 context['py_var'] = [1, 2, 3]
 ```
 
-__template.html__<br>
+__template.html__
 ```html
 {% render_react_page 'my_page' js_var=py_var %}
 ```
 
-__App.js__<br>
+__my_page/App.js__
 ```js
 console.log(js_var);
 ```
@@ -163,7 +166,7 @@ console.log(js_var);
 **Note: These must be JSON serializable or JSON serialized.**
 
 ### Class Based View
-__views.py__<br>
+__views.py__
 ```python
 from react_pages.views import ReactPageView
 
@@ -171,7 +174,7 @@ class MyPageView(ReactPageView):
     page_name = 'my_page'
 ```
 
-__urls.py__<br>
+__urls.py__
 ```
 urlpatterns = [
     ...
@@ -184,7 +187,7 @@ you'll see the react page rendered in its full glory!
 
 To pass the a context to JS, define a `get_js_context()` method
 
-__views.py__<br>
+__views.py__
 ```python
 class MyPageView(ReactPageView):
     page_name = 'my_page'
@@ -193,13 +196,45 @@ class MyPageView(ReactPageView):
         return {'js_var': 'Hello!'}
 ```
 
-__App.js__
+__my_page/App.js__
 ```js
 console.log(js_var);
 ```
 
-#### For production, just put `DEBUG=False` in `settings.py` and relax.
-**Note: This is not implemented yet.**
+### Django Forms
+
+__views.py__
+```python
+from react_pages.views import ReactPagesFormView
+
+
+class MyFormView(ReactPagesFormView):
+    form_class = MyAwesomeForm # Any ol' Django Form
+    page_name = "my_page"
+```
+
+__my_page/App.js__
+```js
+import React, { Component } from 'react';
+
+
+# see the magic in console!
+console.log(csrf_token);
+console.log(form);
+
+export default class App extends Component {
+    render() {
+        return (
+            <form
+                dangerouslySetInnerHTML={{
+                    __html: csrf_token.as_html + form.as_html
+                }}
+            />
+        );
+    }
+}
+
+```
 
 
 ## Existing projects

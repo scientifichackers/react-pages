@@ -11,6 +11,7 @@ python-dotenv = "*"
 
 [dev-packages]
 django = "*"
+ujson = "*"
 
 [requires]
 python_version = "3.6"
