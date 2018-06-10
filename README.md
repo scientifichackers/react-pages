@@ -205,11 +205,12 @@ console.log(js_var);
 
 __views.py__
 ```python
+from .forms import MyAwesomeForm # Any ol' Django Form
 from react_pages.views import ReactPagesFormView
 
 
 class MyFormView(ReactPagesFormView):
-    form_class = MyAwesomeForm # Any ol' Django Form
+    form_class = MyAwesomeForm
     page_name = "my_page"
 ```
 
