@@ -1,10 +1,11 @@
 # React Pages
-##### React Pages lets you use React freely in non-node environments, like Django.
+#### React Pages lets you use React freely in non-node environments, like Django.
 
 ___sans_ React Pages__<br>
 [![Image](https://cdn-images-1.medium.com/max/800/1*B-kFzr8f4OF9rr6Ueg-UFg.png)](https://hackernoon.com/reconciling-djangos-mvc-templates-with-react-components-3aa986cf510a)
 
 
+## Features
 
 - Zero Configuration required.
    Mostly thanks to
@@ -24,17 +25,22 @@ ___sans_ React Pages__<br>
     (see [.env](react_pages/nodejs/.env)).
 - Supports sass-loader, essential for
     [material-components-web](https://github.com/material-components/material-components-web).
+- Parallel-ized builds.
 
 ## Terminology
 
 #### Project
-The project contains the node.js modules necessary
- to use react and the pages you create.
+The project contains some basic scaffolding for a project.<br>
+
+Unlike traditional create-react-app projects,
+ react-pages doesn't require any npm pacakges to be installed.
+
+The inital package.json file is literally empty and is
+ present as a scaffolding, nothing more.
 
 ```
 └── my_project
     ├── package.json
-    ├── package-lock.json
     ├── .env
     ├── .gitignore
     ├── public
@@ -46,8 +52,10 @@ The project contains the node.js modules necessary
 
 #### Page:
 
-A page is a directory containing at least an `index.js` file,
-(and other css/js files specific to your application.)
+A page contains basic scaffolding for a web-page.
+
+You are allowed to import files from other pages in your projects,
+ leveraging true re-usability of components in a project.
 
 ```
 └── my_page
@@ -71,7 +79,7 @@ Requires: Python >=3.6
 
 If you don't have node, <br>
 
-For bash, use [nvm](https://github.com/creationix/nvm#installation).
+For bash/zsh, use [nvm](https://github.com/creationix/nvm#installation).
 
 For fish shell, you can use `fisher fnm`
 ([get fisher](https://github.com/fisherman/fisherman)).
@@ -146,8 +154,7 @@ That's it!<br>
 React Pages will pick-up the "my_page" page from "my_project"
  project and do the necessary work to transpile react JSX.
 
-#### For production, just put `DEBUG=False` in `settings.py` and relax.
-**Note: This is not implemented yet.**
+TODO: For production, just put `DEBUG=False` in `settings.py` and relax
 
 ### Django Context
 
