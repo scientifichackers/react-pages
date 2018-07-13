@@ -22,7 +22,7 @@ ___sans_ React Pages__<br>
     This means creating a new project is **really fast**
     (at the cost of installation time).
 - Respect `NODE_ENV` var wherever possible and automatically update it
-    (see [.env](react_pages/nodejs/.env)).
+    (see [.env](react_pages/nodejs/.env#L28)).
 - Supports sass-loader, essential for
     [material-components-web](https://github.com/material-components/material-components-web).
 - Parallel-ized builds.
